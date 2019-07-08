@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blueview.dao.ProductCapacityMapper">
+  <resultMap id="BaseResultMap" type="com.blueview.model.ProductCapacity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
+    <result column="work_ amount" jdbcType="INTEGER" property="workAmount" />
+    <result column="work_hour" jdbcType="REAL" property="workHour" />
+    <result column="efficiency" jdbcType="REAL" property="efficiency" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, resource_type, "work_ amount", work_hour, efficiency
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_capacity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getProductCapacitiesSelective" parameterType="com.blueview.model.ProductCapacity" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_capacity
+    where 1=1
+    <if test="code != null">
+      and code = #{code,jdbcType=VARCHAR},
+    </if>
+    <if test="name != null">
+      and name = #{name,jdbcType=VARCHAR},
+    </if>
+    <if test="resourceType != null">
+      and resource_type = #{resourceType,jdbcType=VARCHAR},
+    </if>
+    <if test="workAmount != null">
+      and "work_ amount" = #{workAmount,jdbcType=INTEGER},
+    </if>
+    <if test="workHour != null">
+      and work_hour = #{workHour,jdbcType=REAL},
+    </if>
+    <if test="efficiency != null">
+      and efficiency = #{efficiency,jdbcType=REAL},
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_capacity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blueview.model.ProductCapacity">
+    insert into product_capacity (id, code, name, 
+      resource_type, "work_ amount", work_hour, 
+      efficiency)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{resourceType,jdbcType=VARCHAR}, #{workAmount,jdbcType=INTEGER}, #{workHour,jdbcType=REAL}, 
+      #{efficiency,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blueview.model.ProductCapacity">
+    insert into product_capacity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="resourceType != null">
+        resource_type,
+      </if>
+      <if test="workAmount != null">
+        "work_ amount",
+      </if>
+      <if test="workHour != null">
+        work_hour,
+      </if>
+      <if test="efficiency != null">
+        efficiency,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="workAmount != null">
+        #{workAmount,jdbcType=INTEGER},
+      </if>
+      <if test="workHour != null">
+        #{workHour,jdbcType=REAL},
+      </if>
+      <if test="efficiency != null">
+        #{efficiency,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.blueview.model.ProductCapacity">
+    update product_capacity
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        resource_type = #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="workAmount != null">
+        "work_ amount" = #{workAmount,jdbcType=INTEGER},
+      </if>
+      <if test="workHour != null">
+        work_hour = #{workHour,jdbcType=REAL},
+      </if>
+      <if test="efficiency != null">
+        efficiency = #{efficiency,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.blueview.model.ProductCapacity">
+    update product_capacity
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      resource_type = #{resourceType,jdbcType=VARCHAR},
+      "work_ amount" = #{workAmount,jdbcType=INTEGER},
+      work_hour = #{workHour,jdbcType=REAL},
+      efficiency = #{efficiency,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

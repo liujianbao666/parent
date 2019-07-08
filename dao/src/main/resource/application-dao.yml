@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mdm?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    #默认为stat,即开启sql监控。这里加了个wall,表示同时开启sql防火墙
+    druid:
+      filters: stat,wal
+      #spring监控，hello.controller是我的控制层包名，也可以是服务层，用逗号分隔多个监控内容
+      aop-patterns: com.blueview.web.*
+      #监控页面登录用户名
+      StatViewServlet.loginUsername: admin
+      #监控页面登录密码
+      StatViewServlet.loginPassword: 123
+
+#mybatis
+mybatis:
+  config-location: classpath*:mapper/*Mapper.xml

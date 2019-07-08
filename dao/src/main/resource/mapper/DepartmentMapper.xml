@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blueview.dao.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.blueview.model.Department">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="department_type" jdbcType="VARCHAR" property="departmentType" />
+    <result column="cost_centerid" jdbcType="VARCHAR" property="costCenterid" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, department_type, cost_centerid, parent_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from department
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getDepartmentsSelective" parameterType="com.blueview.model.Department" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from department
+    where 1=1
+    <if test="code != null">
+      and code = #{code,jdbcType=VARCHAR},
+    </if>
+    <if test="name != null">
+      and name = #{name,jdbcType=VARCHAR},
+    </if>
+    <if test="departmentType != null">
+      and department_type = #{departmentType,jdbcType=VARCHAR},
+    </if>
+    <if test="costCenterid != null">
+      and cost_centerid = #{costCenterid,jdbcType=VARCHAR},
+    </if>
+    <if test="parentId != null">
+      and parent_id = #{parentId,jdbcType=VARCHAR},
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from department
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.blueview.model.Department">
+    insert into department (id, code, name, 
+      department_type, cost_centerid, parent_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{departmentType,jdbcType=VARCHAR}, #{costCenterid,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.blueview.model.Department">
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="departmentType != null">
+        department_type,
+      </if>
+      <if test="costCenterid != null">
+        cost_centerid,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentType != null">
+        #{departmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="costCenterid != null">
+        #{costCenterid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.blueview.model.Department">
+    update department
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentType != null">
+        department_type = #{departmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="costCenterid != null">
+        cost_centerid = #{costCenterid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.blueview.model.Department">
+    update department
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      department_type = #{departmentType,jdbcType=VARCHAR},
+      cost_centerid = #{costCenterid,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
