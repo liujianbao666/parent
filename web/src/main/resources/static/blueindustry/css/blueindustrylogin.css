@@ -1,10 +1,9 @@
 html{
     height: 100%;
     width: 100%;
-    background-color: #0193F3;
+    background-color: #00276b;
     background-image: url("../img/loginbg.jpg");
-    background-position: center top;
-    background-size: 100% 100%;
+    background-position: center center;
 }
 body{
     background: transparent;
@@ -49,16 +48,14 @@ ul,li{
     right:0;
     top:0;
     height: 70px;
-    background: #ffffff;
     z-index: 10;
-    box-shadow:0px 5px 30px 0px rgba(0, 0, 0, 0.1);
 }
 .logo{
-    margin-top: 7px;
+    margin-top: 20px;
     float: left;
 }
 .logo img{
-    width: 160px;
+    height: 30px;
 }
 .nav{
     float: right;
@@ -70,24 +67,70 @@ ul,li{
 }
 .nav li .item{
     font-size: 14px;
-    color: #333333;
+    color: #ffffff;
     line-height: 70px;
 }
 .nav li .btn{
     margin-top: 20px;
 }
-.login-box{
-    width: 470px;
-    background: #ffffff;
-    position: absolute;
-    left: 50%;
-    top:50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    box-shadow:0px 5px 30px 0px rgba(0, 0, 0, 0.1);
-    margin: 30px auto;
+.nav-tabs{
+    width: 100%;
+    height: 60px;
     padding: 0;
+    margin-bottom: 40px;
+}
+.nav-tabs li{
+    width: 50%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 60px;
+    border-bottom: 1px solid #eeeeee;
+    height: 60px;
+}
+.nav-tabs li a{
+    border: 0px;
+    display: block;
+    line-height: 60px;
+    color: #828596;
+}
+.nav-tabs li a:hover{
+    text-decoration: none;
+    color: #575A6B;
+}
+.nav-tabs li.active{
+    border-bottom: 2px solid #3466DD;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    background: transparent;
+    border: 0px;
+    text-decoration: none;
+    color: #575A6B;
+}
+.lang-box{
+    text-align: center;
+    margin-bottom: 40px;
+}
+.lang-box span{
+    margin: 0 15px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.lang-box span.active{
+    color: #3466DD;
+}
+.login-box{
+    width: 450px;
+    background: #ffffff;
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*top:50%;*/
+    /*-webkit-transform: translate(-50%, -50%);*/
+    /*transform: translate(-50%, -50%);*/
+    border-radius: 10px;
+    box-shadow:0px 0px 30px 0px rgba(0, 0, 0, 0.3);
+    margin: 200px auto 0;
+    padding: 0;
+    float: right;
 }
 .login-box-body{
     padding: 0;
@@ -128,6 +171,9 @@ ul,li{
     display: block;
     border:0px;
     font-size: 16px;
+}
+.login-box .btn-primary:hover{
+    background:linear-gradient(90deg,rgba(0,164,245,1) 0%,rgba(4,51,220,1) 100%) !important;
 }
 .login-box .cancle{
     text-align: center;
@@ -187,14 +233,31 @@ ul,li{
     cursor: pointer;
     text-decoration: none;
 }
+
+.login-tip {
+    text-align: center;
+    margin-bottom: 10px;
+}
 .text-danger{
-    position: absolute;
     color: #DE7035;
-    margin-top: -23px;
-    padding: 0 8px;
+    padding: 2px 8px 2px;
     border-radius: 10px;
-    left: 50%;
-    background: hsla(21, 72%, 54%, 0.2);
-    -webkit-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
+    background: hsla(21, 72%, 54%, 0.1);
+    display: inline-block;
+}
+.code-box{
+    height: 218px;
+    text-align: center;
+}
+.code-img{
+    border: 1px solid #eeeeee;
+    width: 130px;
+    margin: 0px auto 20px;
+}
+.code-img img{
+    width: 130px;
+    height: 130px;
+}
+.for_weixin_login_box{
+    text-align:center;
 }

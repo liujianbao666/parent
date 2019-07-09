@@ -1233,13 +1233,13 @@ a:focus {
  * ---------------
  */
 .form-control {
-  border-radius: 0;
-  box-shadow: none;
-  border-color: #d2d6de;
+  /*border-radius: 0;*/
+  /*box-shadow: none;*/
+  /*border-color: #d2d6de;*/
 }
 .form-control:focus {
-  border-color: #3c8dbc;
-  box-shadow: none;
+  /*border-color: #3c8dbc;*/
+  /*box-shadow: none;*/
 }
 .form-control::-moz-placeholder,
 .form-control:-ms-input-placeholder,
@@ -1287,7 +1287,6 @@ a:focus {
 }
 /* Input group */
 .input-group .input-group-addon {
-  border-radius: 0;
   border-color: #d2d6de;
   background-color: #fff;
 }
@@ -2967,7 +2966,6 @@ table.text-center th {
   background: rgba(0, 0, 0, 0.3);
 }
 .modal-content {
-  border-radius: 0;
   -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.125);
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.125);
   border: 0;

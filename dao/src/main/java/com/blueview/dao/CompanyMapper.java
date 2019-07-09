@@ -13,11 +13,12 @@ public interface CompanyMapper {
 
     int insertSelective(Company record);
 
-    Company selectByPrimaryKey(String code);
+    Company selectByPrimaryKey(Integer id);
 
     List<Company> getCompanysSelective(Company record);
 
     int updateByPrimaryKeySelective(Company record);
 
     int updateByPrimaryKey(Company record);
+
 }
