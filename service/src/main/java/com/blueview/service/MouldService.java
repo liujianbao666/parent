@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.Mould;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface MouldService {
      * @return
      */
     int updateByPrimaryKeySelective(Mould record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param mould
+     * @return
+     */
+    PageInfo<Mould> getPageMouldsSelective(Integer start, Integer length, Mould mould);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    Mould selectByPrimaryKey(Integer id);
 }

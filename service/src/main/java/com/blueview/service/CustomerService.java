@@ -1,7 +1,7 @@
 package com.blueview.service;
 
-import com.blueview.model.Company;
 import com.blueview.model.Customer;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -33,4 +33,8 @@ public interface CustomerService {
      * @return
      */
     int updateByPrimaryKeySelective(Customer record);
+
+    PageInfo<Customer> getCustomersPageSelective(Integer start, Integer length, Customer customer);
+
+    Customer selectByPrimaryKey(Integer id);
 }

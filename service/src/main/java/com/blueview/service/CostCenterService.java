@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.CostCenter;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface CostCenterService {
      * @return
      */
     int updateByPrimaryKeySelective(CostCenter record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param costCenter
+     * @return
+     */
+    PageInfo<CostCenter> getCostCentersPageSelective(Integer start, Integer length, CostCenter costCenter);
+
+    /**
+     * 根据主键查询
+     * @param id
+     * @return
+     */
+    CostCenter selectByPrimaryKey(Integer id);
 }

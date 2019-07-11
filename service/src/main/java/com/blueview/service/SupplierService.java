@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.Supplier;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface SupplierService {
      * @param record
      * @return
      */
-    List<Supplier> getCompanysSelective(Supplier record);
+    List<Supplier> getSuppliersSelective(Supplier record);
 
     /**
      * 添加,code与名称不能为空
@@ -32,4 +33,20 @@ public interface SupplierService {
      * @return
      */
     int updateByPrimaryKeySelective(Supplier record);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    Supplier selectByPrimaryKey(Integer id);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param supplier
+     * @return
+     */
+    PageInfo<Supplier> getSuppliersPageSelective(Integer start, Integer length, Supplier supplier);
 }

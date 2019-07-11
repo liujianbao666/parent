@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.SysDictType;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface SysDictTypeService {
      * @return
      */
     int updateByPrimaryKeySelective(SysDictType record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param sysDictType
+     * @return
+     */
+    PageInfo<SysDictType> getSysDictTypesPageSelective(Integer start, Integer length, SysDictType sysDictType);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    SysDictType selectByPrimaryKey(Integer id);
 }

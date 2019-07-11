@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.Department;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface DepartmentService {
      * @return
      */
     int updateByPrimaryKeySelective(Department record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param department
+     * @return
+     */
+    PageInfo<Department> getDepartmentsPageSelective(Integer start, Integer length, Department department);
+
+    /**
+     * 根据id查询实体
+     * @param id
+     * @return
+     */
+    Department selectByPrimaryKey(Integer id);
 }

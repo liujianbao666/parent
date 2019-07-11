@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.Employer;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface EmployerService {
      * @return
      */
     int updateByPrimaryKeySelective(Employer record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param employer
+     * @return
+     */
+    PageInfo<Employer> getEmployersPageSelective(Integer start, Integer length, Employer employer);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    Employer selectByPrimaryKey(Integer id);
 }

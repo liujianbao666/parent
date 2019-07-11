@@ -6,12 +6,12 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
-    <result column="work_ amount" jdbcType="INTEGER" property="workAmount" />
+    <result column="work_amount" jdbcType="INTEGER" property="workAmount" />
     <result column="work_hour" jdbcType="REAL" property="workHour" />
     <result column="efficiency" jdbcType="REAL" property="efficiency" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, resource_type, "work_ amount", work_hour, efficiency
+    id, code, name, resource_type,work_amount, work_hour, efficiency
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,23 +24,23 @@
     <include refid="Base_Column_List" />
     from product_capacity
     where 1=1
-    <if test="code != null">
-      and code = #{code,jdbcType=VARCHAR},
+    <if test="code != null and code != ''">
+      and code = #{code,jdbcType=VARCHAR}
     </if>
-    <if test="name != null">
-      and name = #{name,jdbcType=VARCHAR},
+    <if test="name != null and name != ''">
+      and name like  concat('%',#{name},'%')
     </if>
-    <if test="resourceType != null">
-      and resource_type = #{resourceType,jdbcType=VARCHAR},
+    <if test="resourceType != null and resourceType != ''">
+      and resource_type = #{resourceType,jdbcType=VARCHAR}
     </if>
-    <if test="workAmount != null">
-      and "work_ amount" = #{workAmount,jdbcType=INTEGER},
+    <if test="workAmount != null and workAmount != ''">
+      andwork_amount = #{workAmount,jdbcType=INTEGER}
     </if>
-    <if test="workHour != null">
-      and work_hour = #{workHour,jdbcType=REAL},
+    <if test="workHour != null and workHour != ''">
+      and work_hour = #{workHour,jdbcType=REAL}
     </if>
-    <if test="efficiency != null">
-      and efficiency = #{efficiency,jdbcType=REAL},
+    <if test="efficiency != null and efficiency != ''">
+      and efficiency = #{efficiency,jdbcType=REAL}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -49,7 +49,7 @@
   </delete>
   <insert id="insert" parameterType="com.blueview.model.ProductCapacity">
     insert into product_capacity (id, code, name, 
-      resource_type, "work_ amount", work_hour, 
+      resource_type,work_amount, work_hour,
       efficiency)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{resourceType,jdbcType=VARCHAR}, #{workAmount,jdbcType=INTEGER}, #{workHour,jdbcType=REAL}, 
@@ -71,7 +71,7 @@
         resource_type,
       </if>
       <if test="workAmount != null">
-        "work_ amount",
+       work_amount,
       </if>
       <if test="workHour != null">
         work_hour,
@@ -117,7 +117,7 @@
         resource_type = #{resourceType,jdbcType=VARCHAR},
       </if>
       <if test="workAmount != null">
-        "work_ amount" = #{workAmount,jdbcType=INTEGER},
+       work_amount = #{workAmount,jdbcType=INTEGER},
       </if>
       <if test="workHour != null">
         work_hour = #{workHour,jdbcType=REAL},
@@ -133,7 +133,7 @@
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       resource_type = #{resourceType,jdbcType=VARCHAR},
-      "work_ amount" = #{workAmount,jdbcType=INTEGER},
+     work_amount = #{workAmount,jdbcType=INTEGER},
       work_hour = #{workHour,jdbcType=REAL},
       efficiency = #{efficiency,jdbcType=REAL}
     where id = #{id,jdbcType=INTEGER}

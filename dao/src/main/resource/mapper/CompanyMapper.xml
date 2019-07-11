@@ -5,11 +5,16 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
-    <result column="receive_code" jdbcType="VARCHAR" property="receiveCode" />
+    <result column="supplier_id" jdbcType="VARCHAR" property="supplierId" />
+    <result column="receive_id" jdbcType="VARCHAR" property="receiveId" />
+    <association property="supplier" javaType="com.blueview.model.Supplier">
+      <id property="id" column="supplier_Id" />
+      <result property="code" column="supplier_code" />
+      <result property="name" column="supplier_name" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
-    id, code, name, supplier_code, receive_code
+    id, code, name, supplier_id, receive_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -18,67 +23,76 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getCompanysSelective" parameterType="com.blueview.model.Company" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from company
+    SELECT
+    cp.id,
+    cp.CODE,
+    cp.NAME,
+    cp.supplier_id,
+    cp.receive_id,
+    sp.code supplier_code,
+    sp.NAME supplier_name
+    FROM
+    company cp
+    LEFT JOIN supplier sp ON cp.supplier_id = sp.id
     where 1=1
     <if test="code != null and code != ''">
-      and code = #{code,jdbcType=VARCHAR}
+      and cp.code = #{code,jdbcType=VARCHAR}
     </if>
     <if test="name != null and name !=''">
-      and  name like concat('%',#{name},'%')
+      and cp.name like  concat('%',#{name},'%')
     </if>
-    <if test="supplierCode != null and supplierCode !=''">
-      and  supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    <if test="supplierId != null and supplierId !=''">
+      and  cp.supplier_Id = #{supplierId,jdbcType=INTEGER}
     </if>
-    <if test="receiveCode != null  and receiveCode !=''">
-      and receive_code = #{receiveCode,jdbcType=VARCHAR}
+    <if test="receiveId != null  and receiveId !=''">
+      and cp.receive_Id = #{receiveId,jdbcType=INTEGER}
     </if>
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from company
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.blueview.model.Company">
     insert into company (id, code, name, 
-      supplier_code, receive_code)
+      supplier_id, receive_id)
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{supplierCode,jdbcType=VARCHAR}, #{receiveCode,jdbcType=VARCHAR})
+      #{supplierId,jdbcType=INTEGER}, #{receiveId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.blueview.model.Company">
     insert into company
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="id != null and id != ''">
         id,
       </if>
-      <if test="code != null">
+      <if test="code != null and code != ''">
         code,
       </if>
-      <if test="name != null">
+      <if test="name != null and name !=''">
         name,
       </if>
-      <if test="supplierCode != null">
-        supplier_code,
+      <if test="supplierId != null and supplierId != ''">
+        supplier_id,
       </if>
-      <if test="receiveCode != null">
-        receive_code,
+      <if test="receiveId != null and receiveId != ''">
+        receive_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="id != null and id != ''">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="code != null">
+      <if test="code != null and code != ''">
         #{code,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
+      <if test="name != null and name !=''">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="supplierCode != null">
-        #{supplierCode,jdbcType=VARCHAR},
+      <if test="supplierId != null and supplierId != ''">
+        #{supplierId,jdbcType=INTEGER},
       </if>
-      <if test="receiveCode != null">
-        #{receiveCode,jdbcType=VARCHAR},
+      <if test="receiveId != null and receiveId != ''">
+        #{receiveId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -91,11 +105,11 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="supplierCode != null">
-        supplier_code = #{supplierCode,jdbcType=VARCHAR},
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=INTEGER},
       </if>
-      <if test="receiveCode != null">
-        receive_code = #{receiveCode,jdbcType=VARCHAR},
+      <if test="receiveId != null">
+        receive_id = #{receiveId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -104,8 +118,8 @@
     update company
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      supplier_code = #{supplierCode,jdbcType=VARCHAR},
-      receive_code = #{receiveCode,jdbcType=VARCHAR}
+      supplier_id = #{supplierId,jdbcType=INTEGER},
+      receive_id = #{receiveId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

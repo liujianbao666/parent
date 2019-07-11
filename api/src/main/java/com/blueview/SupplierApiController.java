@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.SysDictType;
-import com.blueview.service.SysDictTypeService;
+import com.blueview.model.Supplier;
+import com.blueview.service.SupplierService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class SysDictTypeController {
+public class SupplierApiController {
     @Autowired
-    SysDictTypeService sysDictTypeService;
+    SupplierService supplierService;
 
     /**
      * 查询
-     * @param  sysDictType
+     * @param  supplier
      * @return
      */
-    @RequestMapping(value = {"/sysDictTypes"})
-    public ResultJson listSysDictTypes(@RequestBody(required = true) SysDictType sysDictType) {
+    @RequestMapping(value = {"/suppliers"})
+    public ResultJson listSuppliers(@RequestBody(required = true) Supplier supplier) {
         ResultJson resultJson = new ResultJson();
 
-        List<SysDictType> list = sysDictTypeService.getSysDictTypesSelective(sysDictType);
+        List<Supplier> list = supplierService.getSuppliersSelective(supplier);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class SysDictTypeController {
     }
     /**
      * 添加
-     * @param  sysDictType
+     * @param  supplier
      * @return
      */
-    @RequestMapping(value = "/sysDictType", method = POST, produces = "application/json")
-    public ResultJson addSysDictType(@RequestBody(required = true) SysDictType sysDictType) {
+    @RequestMapping(value = "/supplier", method = POST, produces = "application/json")
+    public ResultJson addSupplier(@RequestBody(required = true) Supplier supplier) {
         ResultJson resultJson = new ResultJson();
-        int count = sysDictTypeService.insertSelective(sysDictType);
+        int count = supplierService.insertSelective(supplier);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class SysDictTypeController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/sysDictType/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delSysDictType(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/supplier/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delSupplier(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = sysDictTypeService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = supplierService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class SysDictTypeController {
     }
     /**
      * 修改信息
-     * @param  sysDictType
+     * @param  supplier
      * @return
      */
-    @RequestMapping(value = "/sysDictType/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateSysDictType(@PathVariable(name = "id") String id,@RequestBody(required = true) SysDictType sysDictType) {
+    @RequestMapping(value = "/supplier/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateSupplier(@PathVariable(name = "id") String id,@RequestBody(required = true) Supplier supplier) {
         ResultJson resultJson = new ResultJson();
-        sysDictType.setId(Integer.valueOf(id));
-        int count = sysDictTypeService.updateByPrimaryKeySelective(sysDictType);
+        supplier.setId(Integer.valueOf(id));
+        int count = supplierService.updateByPrimaryKeySelective(supplier);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

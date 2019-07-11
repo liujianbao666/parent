@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.OrderClass;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface OrderClassService {
      * @return
      */
     int updateByPrimaryKeySelective(OrderClass record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param orderClass
+     * @return
+     */
+    PageInfo<OrderClass> getOrderClasssPageSelective(Integer start, Integer length, OrderClass orderClass);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    OrderClass selectByPrimaryKey(Integer id);
 }

@@ -31,5 +31,4 @@ mybatis:
 logging:
   level:
     com.blueview.dao: DEBUG
-  file: ./logs/core.log
   root: INFO

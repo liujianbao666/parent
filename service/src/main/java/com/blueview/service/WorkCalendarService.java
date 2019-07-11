@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.WorkCalendar;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface WorkCalendarService {
      * @return
      */
     int updateByPrimaryKeySelective(WorkCalendar record);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    WorkCalendar selectByPrimaryKey(Integer id);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param workCalendar
+     * @return
+     */
+    PageInfo<WorkCalendar> getWorkCalendarPageSelective(Integer start, Integer length, WorkCalendar workCalendar);
 }

@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.Equipment;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface EquipmentService {
      * @return
      */
     int updateByPrimaryKeySelective(Equipment record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param equipment
+     * @return
+     */
+    PageInfo<Equipment> getEquipmentPageSelective(Integer start, Integer length, Equipment equipment);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    Equipment selectByPrimaryKey(Integer id);
 }

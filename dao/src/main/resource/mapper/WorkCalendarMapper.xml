@@ -20,11 +20,11 @@
     <include refid="Base_Column_List" />
     from work_calendar
     where 1=1
-    <if test="date != null">
-      and date = #{date,jdbcType=DATE},
+    <if test="date != null and date != ''">
+      and date = #{date,jdbcType=DATE}
     </if>
-    <if test="isWork != null">
-      and is_work = #{isWork,jdbcType=BIT},
+    <if test="isWork != null and isWork != ''">
+      and is_work = #{isWork,jdbcType=BIT}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

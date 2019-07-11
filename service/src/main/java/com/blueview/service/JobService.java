@@ -2,6 +2,7 @@ package com.blueview.service;
 
 
 import com.blueview.model.Job;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -33,4 +34,20 @@ public interface JobService {
      * @return
      */
     int updateByPrimaryKeySelective(Job record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param job
+     * @return
+     */
+    PageInfo<Job> getJobsPageSelective(Integer start, Integer length, Job job);
+
+    /**
+     * 按照主键查询
+     * @param id
+     * @return
+     */
+    Job selectByPrimaryKey(Integer id);
 }

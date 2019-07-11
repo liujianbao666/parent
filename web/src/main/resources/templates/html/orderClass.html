@@ -22,16 +22,16 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                公司管理
-                <small>公司列表</small>
+                班次管理
+                <small>班次列表</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                <li><a href="#">公司管理</a></li>
-                <li class="active">公司列表</li>
+                <li><a href="#">班次管理</a></li>
+                <li class="active">班次列表</li>
             </ol>
         </section>
-        <div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="addUpModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addOrderClassModal" tabindex="-1" role="dialog" aria-labelledby="addUpModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -39,11 +39,11 @@
                             &times;
                         </button>
                         <h4 class="modal-title" id="addUpModalLabel">
-                            公司信息
+                            班次信息
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" role="form" th:object="${company}" id="companyUpdateForm" method="post">
+                        <form class="form-horizontal" role="form" th:object="${orderClass}" id="orderClassUpdateForm" method="post">
                             <input type="hidden" class="form-control m-input" th:field="*{id}" id="id">
                             <div class="form-control-inline">
                                 <div class="form-group m-form__group row">
@@ -61,22 +61,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-control-inline">
-                                <div class="form-group m-form__group row">
-                                    <label class="col-lg-3 col-form-label">供应商</label>
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control m-input" th:field="*{supplierCode}" id="supplierCode">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-control-inline">
-                                <div class="form-group m-form__group row">
-                                    <label class="col-lg-3 col-form-label">接收方</label>
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control m-input" th:field="*{receiveCode}" id="receiveCode">
-                                    </div>
-                                </div>
-                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                 <button type="submit" class="btn btn-primary">保存</button>
@@ -91,13 +75,13 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-header with-border">
-                        <a class="btn btn-primary" id="addCompanyBtn">
+                        <a class="btn btn-primary" id="addOrderClassBtn">
                             <i class="fa fa-plus"></i> 增加
                         </a>
-                        <a class="btn btn-warning" id="deleteCompanyBtn">
+                        <a class="btn btn-warning" id="deleteOrderClassBtn">
                             <i class="fa fa-trash-o"></i> 删除
                         </a>
-                        <a class="btn btn-primary" id="updateCompanyBtn">
+                        <a class="btn btn-primary" id="updateOrderClassBtn">
                             <i class="fa fa-edit"></i> 修改
                         </a>
                         <a class="btn btn-primary" id="queryBtn">
@@ -110,7 +94,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="companyList" class="table table-bordered table-striped">
+                    <table id="orderClassList" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th class="center" >
@@ -132,20 +116,20 @@
                                 <input type="text" class="form-control" name="search" id="name_input" placeholder="模糊查询"/>
                             </td>
                             <td align="center">
-                               <!-- <select class="form-control"  name="search" id="supplierCode_input">
+                               <!-- <select class="form-control"  name="search" id="supplierId_input">
                                     <option style='display: none'></option>
                                     <option value="0">标准</option>
                                     <option value="1">定制</option>
                                 </select>-->
-                                <input type="text" class="form-control" name="search" id="supplierCode_input" placeholder="查询"/>
+                                <input type="text" class="form-control" name="search" id="supplierId_input" placeholder="查询"/>
                             </td>
                             <td align="center">
-                             <!--   <select class="form-control"  name="search" id="receiveCode_input">
+                             <!--   <select class="form-control"  name="search" id="receiveId_input">
                                     <option style='display: none'></option>
                                     <option value="0">标准</option>
                                     <option value="1">定制</option>
                                 </select>-->
-                                <input type="text" class="form-control" name="search" id="receiveCode_input" placeholder="查询"/>
+                                <input type="text" class="form-control" name="search" id="receiveId_input" placeholder="查询"/>
                             </td>
                         </tr>
                         </thead>
@@ -166,10 +150,10 @@
 <script th:replace="themes/default/list_js::importjs"></script>
 <script type="text/javascript">
 
-    var companyTable;
+    var orderClassTable;
 
     $(function () {
-        $("#companyUpdateForm").validate({
+        $("#orderClassUpdateForm").validate({
                 highlight: function (e) {
                     $(e).closest('.form-group').addClass('has-error');
                 },
@@ -178,7 +162,7 @@
                 }
                 ,
                 submitHandler: function () {
-                    addCompany();
+                    addOrderClass();
                 }
             }
         );
@@ -186,7 +170,7 @@
     });
     //加载表格数据
     function loadDataTableData() {
-        companyTable = $('#companyList').DataTable({
+        orderClassTable = $('#orderClassList').DataTable({
             "aLengthMenu": [10, 25, 50, 100],
             "bAutoWidth": true,
             "sScrollX":true,
@@ -216,7 +200,7 @@
                 },
                 {"data": "code"},
                 {"data": "name"},
-                {"data": "supplierCode",
+                {"data": "supplierId",
                    /* "render": function (data, type, row, meta) {
                         if("0" == data){
                             return "标准";
@@ -226,16 +210,16 @@
                         }
                     }*/
                 },
-                {"data": "receiveCode"}
+                {"data": "receiveId"}
             ],
             "ajax": {
                 type: "POST",
-                url: '/company/selectCompanys',
+                url: '/orderClass/selectOrderClasss',
                 data: function (d) {
                     d.code = $.trim($('#code_input').val());
                     d.name = $.trim($('#name_input').val());
-                    d.supplierCode = $.trim($('#supplierCode_input').val());
-                    d.receiveCode = $.trim($('#receiveCode_input').val());
+                    d.supplierId = $.trim($('#supplierId_input').val());
+                    d.receiveId = $.trim($('#receiveId_input').val());
                     return d;
                 }
             },
@@ -285,35 +269,35 @@
     //回车键绑定
     $("input[name='search']").bind('keypress', function (event) {
         if (event.keyCode == "13") {
-            companyTable.ajax.reload();
+            orderClassTable.ajax.reload();
         }
     });
 
     //查询
     $('#queryBtn').click(function () {
-        companyTable.ajax.reload();
+        orderClassTable.ajax.reload();
     })
     //重置
     $('#resetBtn').click(function () {
         $("input[name='search']").val('');
         $("#code_input")[0].options.selectedIndex = 0;
         $("#name_input")[0].options.selectedIndex = 0;
-        companyTable.ajax.reload();
+        orderClassTable.ajax.reload();
     })
 
     //添加
-    function addCompany() {
+    function addOrderClass() {
         var params = {
             id: $.trim($('#id').val()),
             name: $.trim($('#name').val()),
             code: $.trim($('#code').val()),
-            supplierCode: $.trim($('#supplierCode').val()),
-            receiveCode: $.trim($('#receiveCode').val()),
+            supplierId: $.trim($('#supplierId').val()),
+            receiveId: $.trim($('#receiveId').val()),
         }
         $.ajax({
             type: "post",
             data: params,
-            url: "/company/saveOrUpdateCompany",
+            url: "/orderClass/saveOrUpdateOrderClass",
             dataType: "json",
             success: function (data) {
                 if (data.code) {
@@ -329,13 +313,13 @@
         })
     }
     //添加
-    $('#addCompanyBtn').click(function () {
+    $('#addOrderClassBtn').click(function () {
         //清空 文本框
         $('.m-input').val('');
-        $('#addCompanyModal').modal('show');
+        $('#addOrderClassModal').modal('show');
     });
     //修改
-    $('#updateCompanyBtn').click(function () {
+    $('#updateOrderClassBtn').click(function () {
         //清空
         $('.m-input').val('');
         var checkedBox = $("input[name='ckb_id']:checked");
@@ -347,7 +331,7 @@
             id: $('input[name="ckb_id"]:checked').val()
         };
         $.ajax({
-            url: '/company/selectByPrimaryKey',
+            url: '/orderClass/selectByPrimaryKey',
             data: params,
             dataType: 'json',
             type: "post",
@@ -358,10 +342,10 @@
                         $('#id').val(data.id);
                         $('#name').val(data.name);
                         $('#code').val(data.code);
-                        $('#supplierCode').val(data.supplierCode);
-                        $('#receiveCode').val(data.receiveCode);
+                        $('#supplierId').val(data.supplierId);
+                        $('#receiveId').val(data.receiveId);
 
-                        $('#addCompanyModal').modal('show');
+                        $('#addOrderClassModal').modal('show');
                     } else {
                         swal('提示', data.msg, 'warning');
                     }
@@ -371,7 +355,7 @@
     })
 
     //删除
-    $('#deleteCompanyBtn').click(function () {
+    $('#deleteOrderClassBtn').click(function () {
         var checkedBox = $("input[name='ckb_id']:checked");
         if (checkedBox.length == 0) {
             swal('提示', '至少选择一条记录，删除！', 'warning');
@@ -396,7 +380,7 @@
                     ids: ids
                 };
                 $.ajax({
-                    url: '/company/deleteCompany',
+                    url: '/orderClass/deleteOrderClass',
                     dataType: 'json',
                     type: "post",
                     data: params,

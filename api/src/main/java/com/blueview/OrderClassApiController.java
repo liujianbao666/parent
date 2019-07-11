@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.Job;
-import com.blueview.service.JobService;
+import com.blueview.model.OrderClass;
+import com.blueview.service.OrderClassService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class JobController {
+public class OrderClassApiController {
     @Autowired
-    JobService jobService;
+    OrderClassService orderClassService;
 
     /**
      * 查询
-     * @param  job
+     * @param  orderClass
      * @return
      */
-    @RequestMapping(value = {"/jobs"})
-    public ResultJson listJobs(@RequestBody(required = true) Job job) {
+    @RequestMapping(value = {"/orderClasss"})
+    public ResultJson listOrderClasss(@RequestBody(required = true) OrderClass orderClass) {
         ResultJson resultJson = new ResultJson();
 
-        List<Job> list = jobService.getJobsSelective(job);
+        List<OrderClass> list = orderClassService.getOrderClassesSelective(orderClass);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class JobController {
     }
     /**
      * 添加
-     * @param  job
+     * @param  orderClass
      * @return
      */
-    @RequestMapping(value = "/job", method = POST, produces = "application/json")
-    public ResultJson addJob(@RequestBody(required = true) Job job) {
+    @RequestMapping(value = "/orderClass", method = POST, produces = "application/json")
+    public ResultJson addOrderClass(@RequestBody(required = true) OrderClass orderClass) {
         ResultJson resultJson = new ResultJson();
-        int count = jobService.insertSelective(job);
+        int count = orderClassService.insertSelective(orderClass);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class JobController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/job/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delJob(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/orderClass/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delOrderClass(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = jobService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = orderClassService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class JobController {
     }
     /**
      * 修改信息
-     * @param  job
+     * @param  orderClass
      * @return
      */
-    @RequestMapping(value = "/job/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateJob(@PathVariable(name = "id") String id,@RequestBody(required = true) Job job) {
+    @RequestMapping(value = "/orderClass/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateOrderClass(@PathVariable(name = "id") String id,@RequestBody(required = true) OrderClass orderClass) {
         ResultJson resultJson = new ResultJson();
-        job.setId(Integer.valueOf(id));
-        int count = jobService.updateByPrimaryKeySelective(job);
+        orderClass.setId(Integer.valueOf(id));
+        int count = orderClassService.updateByPrimaryKeySelective(orderClass);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

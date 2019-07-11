@@ -6,8 +6,13 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="department_type" jdbcType="VARCHAR" property="departmentType" />
-    <result column="cost_centerid" jdbcType="VARCHAR" property="costCenterid" />
+    <result column="cost_centerid" jdbcType="INTEGER" property="costCenterid" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <association property="supplier" javaType="com.blueview.model.CostCenter">
+      <id property="id" column="supplier_Id" />
+      <result property="code" column="supplier_code" />
+      <result property="name" column="supplier_name" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     id, code, name, department_type, cost_centerid, parent_id
@@ -19,24 +24,32 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getDepartmentsSelective" parameterType="com.blueview.model.Department" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from department
+    SELECT
+    de.id,
+    de. CODE,
+    de. NAME,
+    de.department_type,
+    de.cost_centerid,
+    de.parent_id,
+    cc. NAME costcentername
+    FROM
+    department de
+    LEFT JOIN cost_center cc ON de.cost_centerid = cc.id
     where 1=1
-    <if test="code != null">
-      and code = #{code,jdbcType=VARCHAR},
+    <if test="code != null and code != ''">
+      and de.code = #{code,jdbcType=VARCHAR}
     </if>
-    <if test="name != null">
-      and name = #{name,jdbcType=VARCHAR},
+    <if test="name != null and name !=''">
+      and de.name like  concat('%',#{name},'%')
     </if>
-    <if test="departmentType != null">
-      and department_type = #{departmentType,jdbcType=VARCHAR},
+    <if test="departmentType != null and departmentType != '' ">
+      and de.department_type = #{departmentType,jdbcType=VARCHAR}
     </if>
-    <if test="costCenterid != null">
-      and cost_centerid = #{costCenterid,jdbcType=VARCHAR},
+    <if test="costCenterid != null and costCenterid != ''">
+      and de.cost_centerid = #{costCenterid,jdbcType=INTEGER}
     </if>
-    <if test="parentId != null">
-      and parent_id = #{parentId,jdbcType=VARCHAR},
+    <if test="parentId != null and parentId != '' ">
+      and de.parent_id = #{parentId,jdbcType=VARCHAR}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -48,7 +61,7 @@
       department_type, cost_centerid, parent_id
       )
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{departmentType,jdbcType=VARCHAR}, #{costCenterid,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}
+      #{departmentType,jdbcType=VARCHAR}, #{costCenterid,jdbcType=INTEGER}, #{parentId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.blueview.model.Department">
@@ -107,7 +120,7 @@
         department_type = #{departmentType,jdbcType=VARCHAR},
       </if>
       <if test="costCenterid != null">
-        cost_centerid = #{costCenterid,jdbcType=VARCHAR},
+        cost_centerid = #{costCenterid,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=VARCHAR},
@@ -120,7 +133,7 @@
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       department_type = #{departmentType,jdbcType=VARCHAR},
-      cost_centerid = #{costCenterid,jdbcType=VARCHAR},
+      cost_centerid = #{costCenterid,jdbcType=INTEGER},
       parent_id = #{parentId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

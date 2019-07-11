@@ -1,6 +1,7 @@
 package com.blueview.service;
 
 import com.blueview.model.ProductCapacity;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -32,4 +33,20 @@ public interface ProductCapacityService {
      * @return
      */
     int updateByPrimaryKeySelective(ProductCapacity record);
+
+    /**
+     * 分页查询
+     * @param start
+     * @param length
+     * @param productCapacity
+     * @return
+     */
+    PageInfo<ProductCapacity> getProductCapacitysPageSelective(Integer start, Integer length, ProductCapacity productCapacity);
+
+    /**
+     * 按主键查询
+     * @param id
+     * @return
+     */
+    ProductCapacity selectByPrimaryKey(Integer id);
 }

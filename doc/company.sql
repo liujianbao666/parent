@@ -1,13 +1,13 @@
 -- ----------------------------
--- Table structure for company
+-- Table structure for html
 -- ----------------------------
 DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
   `id` int NOT NULL auto_increment COMMENT '主键',
   `code` varchar(32) NOT NULL unique COMMENT '编码',
   `name` varchar(64) default NULL COMMENT '名称',
-  `supplier_code` varchar(32) default NULL COMMENT '供应商编码',
-  `receive_code` varchar(32) character set utf8 collate utf8_bin default NULL COMMENT '接收方编码',
+  `supplier_id` varchar(32) default NULL COMMENT '供应商编码',
+  `receive_id` varchar(32) character set utf8 collate utf8_bin default NULL COMMENT '接收方编码',
   PRIMARY KEY  (`id`)
 ) comment='公司' ENGINE=INNODB DEFAULT CHARSET=utf8;
 

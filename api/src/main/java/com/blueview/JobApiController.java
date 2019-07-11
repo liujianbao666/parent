@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.ProductCapacity;
-import com.blueview.service.ProductCapacityService;
+import com.blueview.model.Job;
+import com.blueview.service.JobService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class ProductCapacityController {
+public class JobApiController {
     @Autowired
-    ProductCapacityService productCapacityService;
+    JobService jobService;
 
     /**
      * 查询
-     * @param  productCapacity
+     * @param  job
      * @return
      */
-    @RequestMapping(value = {"/productCapacitys"})
-    public ResultJson listProductCapacitys(@RequestBody(required = true) ProductCapacity productCapacity) {
+    @RequestMapping(value = {"/jobs"})
+    public ResultJson listJobs(@RequestBody(required = true) Job job) {
         ResultJson resultJson = new ResultJson();
 
-        List<ProductCapacity> list = productCapacityService.getProductCapacitiesSelective(productCapacity);
+        List<Job> list = jobService.getJobsSelective(job);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class ProductCapacityController {
     }
     /**
      * 添加
-     * @param  productCapacity
+     * @param  job
      * @return
      */
-    @RequestMapping(value = "/productCapacity", method = POST, produces = "application/json")
-    public ResultJson addProductCapacity(@RequestBody(required = true) ProductCapacity productCapacity) {
+    @RequestMapping(value = "/job", method = POST, produces = "application/json")
+    public ResultJson addJob(@RequestBody(required = true) Job job) {
         ResultJson resultJson = new ResultJson();
-        int count = productCapacityService.insertSelective(productCapacity);
+        int count = jobService.insertSelective(job);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class ProductCapacityController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/productCapacity/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delProductCapacity(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/job/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delJob(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = productCapacityService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = jobService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class ProductCapacityController {
     }
     /**
      * 修改信息
-     * @param  productCapacity
+     * @param  job
      * @return
      */
-    @RequestMapping(value = "/productCapacity/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateProductCapacity(@PathVariable(name = "id") String id,@RequestBody(required = true) ProductCapacity productCapacity) {
+    @RequestMapping(value = "/job/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateJob(@PathVariable(name = "id") String id,@RequestBody(required = true) Job job) {
         ResultJson resultJson = new ResultJson();
-        productCapacity.setId(Integer.valueOf(id));
-        int count = productCapacityService.updateByPrimaryKeySelective(productCapacity);
+        job.setId(Integer.valueOf(id));
+        int count = jobService.updateByPrimaryKeySelective(job);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

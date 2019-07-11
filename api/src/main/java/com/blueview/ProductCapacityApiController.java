@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.Mould;
-import com.blueview.service.MouldService;
+import com.blueview.model.ProductCapacity;
+import com.blueview.service.ProductCapacityService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class MouldController {
+public class ProductCapacityApiController {
     @Autowired
-    MouldService mouldService;
+    ProductCapacityService productCapacityService;
 
     /**
      * 查询
-     * @param  mould
+     * @param  productCapacity
      * @return
      */
-    @RequestMapping(value = {"/moulds"})
-    public ResultJson listMoulds(@RequestBody(required = true) Mould mould) {
+    @RequestMapping(value = {"/productCapacitys"})
+    public ResultJson listProductCapacitys(@RequestBody(required = true) ProductCapacity productCapacity) {
         ResultJson resultJson = new ResultJson();
 
-        List<Mould> list = mouldService.getMouldsSelective(mould);
+        List<ProductCapacity> list = productCapacityService.getProductCapacitiesSelective(productCapacity);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class MouldController {
     }
     /**
      * 添加
-     * @param  mould
+     * @param  productCapacity
      * @return
      */
-    @RequestMapping(value = "/mould", method = POST, produces = "application/json")
-    public ResultJson addMould(@RequestBody(required = true) Mould mould) {
+    @RequestMapping(value = "/productCapacity", method = POST, produces = "application/json")
+    public ResultJson addProductCapacity(@RequestBody(required = true) ProductCapacity productCapacity) {
         ResultJson resultJson = new ResultJson();
-        int count = mouldService.insertSelective(mould);
+        int count = productCapacityService.insertSelective(productCapacity);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class MouldController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/mould/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delMould(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/productCapacity/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delProductCapacity(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = mouldService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = productCapacityService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class MouldController {
     }
     /**
      * 修改信息
-     * @param  mould
+     * @param  productCapacity
      * @return
      */
-    @RequestMapping(value = "/mould/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateMould(@PathVariable(name = "id") String id,@RequestBody(required = true) Mould mould) {
+    @RequestMapping(value = "/productCapacity/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateProductCapacity(@PathVariable(name = "id") String id,@RequestBody(required = true) ProductCapacity productCapacity) {
         ResultJson resultJson = new ResultJson();
-        mould.setId(Integer.valueOf(id));
-        int count = mouldService.updateByPrimaryKeySelective(mould);
+        productCapacity.setId(Integer.valueOf(id));
+        int count = productCapacityService.updateByPrimaryKeySelective(productCapacity);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.Equipment;
-import com.blueview.service.EquipmentService;
+import com.blueview.model.Mould;
+import com.blueview.service.MouldService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class EquipmentController {
+public class MouldApiController {
     @Autowired
-    EquipmentService equipmentService;
+    MouldService mouldService;
 
     /**
      * 查询
-     * @param  equipment
+     * @param  mould
      * @return
      */
-    @RequestMapping(value = {"/equipments"})
-    public ResultJson listEquipments(@RequestBody(required = true) Equipment equipment) {
+    @RequestMapping(value = {"/moulds"})
+    public ResultJson listMoulds(@RequestBody(required = true) Mould mould) {
         ResultJson resultJson = new ResultJson();
 
-        List<Equipment> list = equipmentService.getEquipmentsSelective(equipment);
+        List<Mould> list = mouldService.getMouldsSelective(mould);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class EquipmentController {
     }
     /**
      * 添加
-     * @param  equipment
+     * @param  mould
      * @return
      */
-    @RequestMapping(value = "/equipment", method = POST, produces = "application/json")
-    public ResultJson addEquipment(@RequestBody(required = true) Equipment equipment) {
+    @RequestMapping(value = "/mould", method = POST, produces = "application/json")
+    public ResultJson addMould(@RequestBody(required = true) Mould mould) {
         ResultJson resultJson = new ResultJson();
-        int count = equipmentService.insertSelective(equipment);
+        int count = mouldService.insertSelective(mould);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class EquipmentController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/equipment/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delEquipment(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/mould/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delMould(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = equipmentService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = mouldService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class EquipmentController {
     }
     /**
      * 修改信息
-     * @param  equipment
+     * @param  mould
      * @return
      */
-    @RequestMapping(value = "/equipment/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateEquipment(@PathVariable(name = "id") String id,@RequestBody(required = true) Equipment equipment) {
+    @RequestMapping(value = "/mould/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateMould(@PathVariable(name = "id") String id,@RequestBody(required = true) Mould mould) {
         ResultJson resultJson = new ResultJson();
-        equipment.setId(Integer.valueOf(id));
-        int count = equipmentService.updateByPrimaryKeySelective(equipment);
+        mould.setId(Integer.valueOf(id));
+        int count = mouldService.updateByPrimaryKeySelective(mould);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

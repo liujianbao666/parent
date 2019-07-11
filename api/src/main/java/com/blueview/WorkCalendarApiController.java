@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.Supplier;
-import com.blueview.service.SupplierService;
+import com.blueview.model.WorkCalendar;
+import com.blueview.service.WorkCalendarService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class SupplierController {
+public class WorkCalendarApiController {
     @Autowired
-    SupplierService supplierService;
+    WorkCalendarService workCalendarService;
 
     /**
      * 查询
-     * @param  supplier
+     * @param  workCalendar
      * @return
      */
-    @RequestMapping(value = {"/suppliers"})
-    public ResultJson listSuppliers(@RequestBody(required = true) Supplier supplier) {
+    @RequestMapping(value = {"/workCalendars"})
+    public ResultJson listWorkCalendars(@RequestBody(required = true) WorkCalendar workCalendar) {
         ResultJson resultJson = new ResultJson();
 
-        List<Supplier> list = supplierService.getCompanysSelective(supplier);
+        List<WorkCalendar> list = workCalendarService.getWorkCalendarsSelective(workCalendar);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class SupplierController {
     }
     /**
      * 添加
-     * @param  supplier
+     * @param  workCalendar
      * @return
      */
-    @RequestMapping(value = "/supplier", method = POST, produces = "application/json")
-    public ResultJson addSupplier(@RequestBody(required = true) Supplier supplier) {
+    @RequestMapping(value = "/workCalendar", method = POST, produces = "application/json")
+    public ResultJson addWorkCalendar(@RequestBody(required = true) WorkCalendar workCalendar) {
         ResultJson resultJson = new ResultJson();
-        int count = supplierService.insertSelective(supplier);
+        int count = workCalendarService.insertSelective(workCalendar);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class SupplierController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/supplier/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delSupplier(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/workCalendar/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delWorkCalendar(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = supplierService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = workCalendarService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class SupplierController {
     }
     /**
      * 修改信息
-     * @param  supplier
+     * @param  workCalendar
      * @return
      */
-    @RequestMapping(value = "/supplier/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateSupplier(@PathVariable(name = "id") String id,@RequestBody(required = true) Supplier supplier) {
+    @RequestMapping(value = "/workCalendar/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateWorkCalendar(@PathVariable(name = "id") String id,@RequestBody(required = true) WorkCalendar workCalendar) {
         ResultJson resultJson = new ResultJson();
-        supplier.setId(Integer.valueOf(id));
-        int count = supplierService.updateByPrimaryKeySelective(supplier);
+        workCalendar.setId(Integer.valueOf(id));
+        int count = workCalendarService.updateByPrimaryKeySelective(workCalendar);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

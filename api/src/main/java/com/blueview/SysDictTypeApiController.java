@@ -1,7 +1,7 @@
 package com.blueview;
 
-import com.blueview.model.OrderClass;
-import com.blueview.service.OrderClassService;
+import com.blueview.model.SysDictType;
+import com.blueview.service.SysDictTypeService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,20 +20,20 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 @Log4j2
-public class OrderClassController {
+public class SysDictTypeApiController {
     @Autowired
-    OrderClassService orderClassService;
+    SysDictTypeService sysDictTypeService;
 
     /**
      * 查询
-     * @param  orderClass
+     * @param  sysDictType
      * @return
      */
-    @RequestMapping(value = {"/orderClasss"})
-    public ResultJson listOrderClasss(@RequestBody(required = true) OrderClass orderClass) {
+    @RequestMapping(value = {"/sysDictTypes"})
+    public ResultJson listSysDictTypes(@RequestBody(required = true) SysDictType sysDictType) {
         ResultJson resultJson = new ResultJson();
 
-        List<OrderClass> list = orderClassService.getOrderClassesSelective(orderClass);
+        List<SysDictType> list = sysDictTypeService.getSysDictTypesSelective(sysDictType);
 
         if(list.size()>0){
             resultJson.setCode("200");
@@ -48,13 +48,13 @@ public class OrderClassController {
     }
     /**
      * 添加
-     * @param  orderClass
+     * @param  sysDictType
      * @return
      */
-    @RequestMapping(value = "/orderClass", method = POST, produces = "application/json")
-    public ResultJson addOrderClass(@RequestBody(required = true) OrderClass orderClass) {
+    @RequestMapping(value = "/sysDictType", method = POST, produces = "application/json")
+    public ResultJson addSysDictType(@RequestBody(required = true) SysDictType sysDictType) {
         ResultJson resultJson = new ResultJson();
-        int count = orderClassService.insertSelective(orderClass);
+        int count = sysDictTypeService.insertSelective(sysDictType);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("添加成功!");
@@ -72,10 +72,10 @@ public class OrderClassController {
      * @param  id
      * @return
      */
-    @RequestMapping(value = "/orderClass/{id}", method = DELETE, produces = "application/json")
-    public ResultJson delOrderClass(@PathVariable(required = true) String id) {
+    @RequestMapping(value = "/sysDictType/{id}", method = DELETE, produces = "application/json")
+    public ResultJson delSysDictType(@PathVariable(required = true) String id) {
         ResultJson resultJson = new ResultJson();
-        int count = orderClassService.deleteByPrimaryKey(Integer.valueOf(id));
+        int count = sysDictTypeService.deleteByPrimaryKey(Integer.valueOf(id));
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("删除成功!");
@@ -89,14 +89,14 @@ public class OrderClassController {
     }
     /**
      * 修改信息
-     * @param  orderClass
+     * @param  sysDictType
      * @return
      */
-    @RequestMapping(value = "/orderClass/{id}", method = PUT, produces = "application/json")
-    public ResultJson updateOrderClass(@PathVariable(name = "id") String id,@RequestBody(required = true) OrderClass orderClass) {
+    @RequestMapping(value = "/sysDictType/{id}", method = PUT, produces = "application/json")
+    public ResultJson updateSysDictType(@PathVariable(name = "id") String id,@RequestBody(required = true) SysDictType sysDictType) {
         ResultJson resultJson = new ResultJson();
-        orderClass.setId(Integer.valueOf(id));
-        int count = orderClassService.updateByPrimaryKeySelective(orderClass);
+        sysDictType.setId(Integer.valueOf(id));
+        int count = sysDictTypeService.updateByPrimaryKeySelective(sysDictType);
         if(count==1){
             resultJson.setCode("200");
             resultJson.setMsg("修改成功!");

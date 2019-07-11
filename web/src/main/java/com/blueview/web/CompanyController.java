@@ -25,20 +25,14 @@ public class CompanyController {
     public String addCompany(Model model) {
         Company company = new Company();
         model.addAttribute("company", company);
-        return "company/manage";
+        return "html/company";
     }
 
     @RequestMapping(value = "/selectCompanys")
     @ResponseBody
-    public Map<String, Object> selectCompanys(Integer draw, Integer start, Integer length, String code, String name, String supplierCode, String receiveCode) {
+    public Map<String, Object> selectCompanys(Integer draw, Integer start, Integer length,Company company) {
 
         Map<String, Object> result = new HashMap<String, Object>();
-        Company company = new Company();
-        company.setCode(code);
-        company.setName(name);
-        company.setSupplierCode(supplierCode);
-        company.setReceiveCode(receiveCode);
-
         PageInfo<Company> companys = companyService.getPageCompanysSelective(start, length,company);
         long total = companys.getTotal();
         result.put("draw", draw);
@@ -72,9 +66,9 @@ public class CompanyController {
             }
             map.put("msg", "添加失败！");
         }else{//如果不为空时为修改
-            if (companysSelective.size() == 1) {
+            if (companysSelective.size() < 2) {
                 //数据中就一条数据看是不是自己
-                if((int)companysSelective.get(0).getId()==(int)company.getId()){
+                if(companysSelective.size() == 0 || (int)companysSelective.get(0).getId()==(int)company.getId()){
                     int n = companyService.updateByPrimaryKeySelective(company);
                     if (n == 1) {
                         map.put("msg", "修改成功！");
@@ -101,13 +95,13 @@ public class CompanyController {
         return companyService.selectByPrimaryKey(id);
       /*  Map<String, Object> map = new HashMap<>();
         Company companytmp = new Company();
-        companytmp.setCode(company.getCode());
+        companytmp.setCode(html.getCode());
         int count = companyService.countAllCompanys(companytmp);
         if (count > 0) {
             map.put("msg", "编码已存在！");
             return map;
         }
-        int n = companyService.updateByPrimaryKeySelective(company);
+        int n = companyService.updateByPrimaryKeySelective(html);
         map.put("msg", "修改成功！");
         map.put("code", 200);
 */

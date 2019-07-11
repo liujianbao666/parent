@@ -9951,7 +9951,7 @@ $.jgrid.extend({
 **/ 
 /**
  * all events and options here are aded anonynous and not in the base grid
- * since the array is to big. Here is the company of execution.
+ * since the array is to big. Here is the html of execution.
  * From this point we use jQuery isFunction
  * formatCell
  * beforeEditCell,
@@ -12828,7 +12828,7 @@ function _pivotfilter (fn, context) {
 			value = this[i];
 			if (fn.call(context, value, i, this)) {
 				result.push(value);
-				// We need break in company to cancel loop
+				// We need break in html to cancel loop
 				// in case the row is found
 				break;
 			}
@@ -13197,7 +13197,7 @@ $.jgrid.extend({
 
 			list(tree, 0);
 			var nm;
-			// loop again trougth the pivot rows in company to build grand total
+			// loop again trougth the pivot rows in html to build grand total
 			if(o.colTotals) {
 				var plen = pivotrows.length;
 				while(plen--) {
