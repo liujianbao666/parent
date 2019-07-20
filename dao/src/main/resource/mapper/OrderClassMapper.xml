@@ -6,8 +6,8 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="time_interval_total" jdbcType="INTEGER" property="timeIntervalTotal" />
-    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
+    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, code, name, time_interval_total, start_time, end_time
@@ -33,10 +33,10 @@
       and time_interval_total = #{timeIntervalTotal,jdbcType=INTEGER}
     </if>
     <if test="startTime != null and startTime != ''">
-      and start_time = #{startTime,jdbcType=TIMESTAMP}
+      and start_time = #{startTime,jdbcType=VARCHAR}
     </if>
     <if test="endTime != null and endTime != ''">
-      and end_time = #{endTime,jdbcType=TIMESTAMP}
+      and end_time = #{endTime,jdbcType=VARCHAR}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -48,7 +48,7 @@
       time_interval_total, start_time, end_time
       )
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{timeIntervalTotal,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
+      #{timeIntervalTotal,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.blueview.model.OrderClass">
@@ -87,10 +87,10 @@
         #{timeIntervalTotal,jdbcType=INTEGER},
       </if>
       <if test="startTime != null">
-        #{startTime,jdbcType=TIMESTAMP},
+        #{startTime,jdbcType=VARCHAR},
       </if>
       <if test="endTime != null">
-        #{endTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -107,10 +107,10 @@
         time_interval_total = #{timeIntervalTotal,jdbcType=INTEGER},
       </if>
       <if test="startTime != null">
-        start_time = #{startTime,jdbcType=TIMESTAMP},
+        start_time = #{startTime,jdbcType=VARCHAR},
       </if>
       <if test="endTime != null">
-        end_time = #{endTime,jdbcType=TIMESTAMP},
+        end_time = #{endTime,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -120,8 +120,8 @@
     set code = #{code,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       time_interval_total = #{timeIntervalTotal,jdbcType=INTEGER},
-      start_time = #{startTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP}
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

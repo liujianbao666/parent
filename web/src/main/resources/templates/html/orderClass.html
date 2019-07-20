@@ -47,7 +47,7 @@
                             <input type="hidden" class="form-control m-input" th:field="*{id}" id="id">
                             <div class="form-control-inline">
                                 <div class="form-group m-form__group row">
-                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>公司名称：</label>
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>名称：</label>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control m-input" th:field="*{name}" id="name" required>
                                     </div>
@@ -55,9 +55,33 @@
                             </div>
                             <div class="form-control-inline">
                                 <div class="form-group m-form__group row">
-                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>公司编码：</label>
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>编码：</label>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control m-input" th:field="*{code}" id="code" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-control-inline">
+                                <div class="form-group m-form__group row">
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>总时段：</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control m-input" th:field="*{timeIntervalTotal}" id="timeIntervalTotal" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-control-inline">
+                                <div class="form-group m-form__group row">
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>开始时间：</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control m-input" th:field="*{startTime}" id="startTime" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-control-inline">
+                                <div class="form-group m-form__group row">
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>结束时间：</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control m-input" th:field="*{endTime}" id="endTime" required>
                                     </div>
                                 </div>
                             </div>
@@ -103,8 +127,9 @@
                             <th >序号</th>
                             <th >编码</th>
                             <th >名称</th>
-                            <th >供应商</th>
-                            <th >接收方</th>
+                            <th >总时段</th>
+                            <th >开始时间</th>
+                            <th >结束时间</th>
                         </tr>
                         <tr>
                             <td> </td>
@@ -121,7 +146,7 @@
                                     <option value="0">标准</option>
                                     <option value="1">定制</option>
                                 </select>-->
-                                <input type="text" class="form-control" name="search" id="supplierId_input" placeholder="查询"/>
+                                <input type="text" class="form-control" name="search" id="timeIntervalTotal_input" placeholder="查询"/>
                             </td>
                             <td align="center">
                              <!--   <select class="form-control"  name="search" id="receiveId_input">
@@ -129,7 +154,15 @@
                                     <option value="0">标准</option>
                                     <option value="1">定制</option>
                                 </select>-->
-                                <input type="text" class="form-control" name="search" id="receiveId_input" placeholder="查询"/>
+                                <input type="text" class="form-control" name="search" id="startTime_input" placeholder="查询"/>
+                            </td>
+                            <td align="center">
+                                <!--   <select class="form-control"  name="search" id="receiveId_input">
+                                       <option style='display: none'></option>
+                                       <option value="0">标准</option>
+                                       <option value="1">定制</option>
+                                   </select>-->
+                                <input type="text" class="form-control" name="search" id="endTime_input" placeholder="查询"/>
                             </td>
                         </tr>
                         </thead>
@@ -200,7 +233,7 @@
                 },
                 {"data": "code"},
                 {"data": "name"},
-                {"data": "supplierId",
+                {"data": "timeIntervalTotal",
                    /* "render": function (data, type, row, meta) {
                         if("0" == data){
                             return "标准";
@@ -210,7 +243,8 @@
                         }
                     }*/
                 },
-                {"data": "receiveId"}
+                {"data": "startTime"},
+                {"data": "endTime"}
             ],
             "ajax": {
                 type: "POST",
@@ -218,8 +252,9 @@
                 data: function (d) {
                     d.code = $.trim($('#code_input').val());
                     d.name = $.trim($('#name_input').val());
-                    d.supplierId = $.trim($('#supplierId_input').val());
-                    d.receiveId = $.trim($('#receiveId_input').val());
+                    d.timeIntervalTotal = $.trim($('#timeIntervalTotal_input').val());
+                    d.startTime = $.trim($('#startTime_input').val());
+                    d.endTime = $.trim($('#endTime_input').val());
                     return d;
                 }
             },
@@ -291,8 +326,9 @@
             id: $.trim($('#id').val()),
             name: $.trim($('#name').val()),
             code: $.trim($('#code').val()),
-            supplierId: $.trim($('#supplierId').val()),
-            receiveId: $.trim($('#receiveId').val()),
+            timeIntervalTotal: $.trim($('#timeIntervalTotal').val()),
+            startTime: $.trim($('#startTime').val()),
+            endTime: $.trim($('#endTime').val()),
         }
         $.ajax({
             type: "post",
@@ -342,9 +378,9 @@
                         $('#id').val(data.id);
                         $('#name').val(data.name);
                         $('#code').val(data.code);
-                        $('#supplierId').val(data.supplierId);
-                        $('#receiveId').val(data.receiveId);
-
+                        $('#timeIntervalTotal').val(data.timeIntervalTotal);
+                        $('#startTime').val(data.startTime);
+                        $('#endTime').val(data.endTime);
                         $('#addOrderClassModal').modal('show');
                     } else {
                         swal('提示', data.msg, 'warning');
