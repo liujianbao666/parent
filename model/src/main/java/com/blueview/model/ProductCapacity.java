@@ -1,5 +1,8 @@
 package com.blueview.model;
 
+import lombok.Data;
+
+@Data
 public class ProductCapacity {
     /**
      * 主键
@@ -35,60 +38,8 @@ public class ProductCapacity {
      * 效率
      */
     private Float efficiency;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getResourceType() {
-        return resourceType;
-    }
-
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType == null ? null : resourceType.trim();
-    }
-
-    public Integer getWorkAmount() {
-        return workAmount;
-    }
-
-    public void setWorkAmount(Integer workAmount) {
-        this.workAmount = workAmount;
-    }
-
-    public Float getWorkHour() {
-        return workHour;
-    }
-
-    public void setWorkHour(Float workHour) {
-        this.workHour = workHour;
-    }
-
-    public Float getEfficiency() {
-        return efficiency;
-    }
-
-    public void setEfficiency(Float efficiency) {
-        this.efficiency = efficiency;
-    }
+    /**
+     * 资源类型
+     */
+    private String resourceTypeName;
 }

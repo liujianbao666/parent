@@ -9,6 +9,7 @@
     <result column="work_amount" jdbcType="INTEGER" property="workAmount" />
     <result column="work_hour" jdbcType="REAL" property="workHour" />
     <result column="efficiency" jdbcType="REAL" property="efficiency" />
+    <result column="resource_type_name" jdbcType="REAL" property="resourceTypeName" />
   </resultMap>
   <sql id="Base_Column_List">
     id, code, name, resource_type,work_amount, work_hour, efficiency
@@ -20,29 +21,40 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getProductCapacitiesSelective" parameterType="com.blueview.model.ProductCapacity" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from product_capacity
-    where 1=1
+    SELECT
+    p.id,
+    p.CODE,
+    p.NAME,
+    p.resource_type,
+    p.work_amount,
+    p.work_hour,
+    p.efficiency,
+    dict.name resource_type_name
+    FROM
+    product_capacity p LEFT JOIN sys_dict_type dict ON p.resource_type=dict.value
+    WHERE
+    1 = 1
+    AND dict.parent_id= '11'
     <if test="code != null and code != ''">
-      and code = #{code,jdbcType=VARCHAR}
+      and p.code = #{code,jdbcType=VARCHAR}
     </if>
     <if test="name != null and name != ''">
-      and name like  concat('%',#{name},'%')
+      and p.name like  concat('%',#{name},'%')
     </if>
     <if test="resourceType != null and resourceType != ''">
-      and resource_type = #{resourceType,jdbcType=VARCHAR}
+      and p.resource_type = #{resourceType,jdbcType=VARCHAR}
     </if>
     <if test="workAmount != null and workAmount != ''">
-      andwork_amount = #{workAmount,jdbcType=INTEGER}
+      and p.work_amount = #{workAmount,jdbcType=INTEGER}
     </if>
     <if test="workHour != null and workHour != ''">
-      and work_hour = #{workHour,jdbcType=REAL}
+      and p.work_hour = #{workHour,jdbcType=REAL}
     </if>
     <if test="efficiency != null and efficiency != ''">
-      and efficiency = #{efficiency,jdbcType=REAL}
+      and p.efficiency = #{efficiency,jdbcType=REAL}
     </if>
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product_capacity
     where id = #{id,jdbcType=INTEGER}

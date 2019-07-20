@@ -65,7 +65,10 @@
                                 <div class="form-group m-form__group row">
                                     <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>类型：</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control m-input" th:field="*{resourceType}" id="resourceType" required>
+                                       <!-- <input type="text" class="form-control m-input" th:field="*{resourceType}" id="resourceType" required>-->
+                                        <select class="form-control"  name="search" id="resourceType">
+                                            <option style='display: none'></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -155,21 +158,19 @@
                                     <option value="0">标准</option>
                                     <option value="1">定制</option>
                                 </select>-->
-                                <input type="text" class="form-control" name="search" id="resourceType_input" placeholder="查询"/>
+                                <!--<input type="text" class="form-control" name="search" id="resourceType_input" placeholder="查询"/>-->
+                                <select class="form-control"  name="search" id="resourceType_input">
+                                    <option style='display: none'></option>
+                                </select>
                             </td>
                             <td align="center">
-                             <!--   <select class="form-control"  name="search" id="receiveId_input">
-                                    <option style='display: none'></option>
-                                    <option value="0">标准</option>
-                                    <option value="1">定制</option>
-                                </select>-->
                                 <input type="text" class="form-control" name="search" id="workAmount_input" placeholder="查询"/>
                             </td>
                             <td align="center">
-                                <input type="text" class="form-control" name="search" id="workHour_input" placeholder="模糊查询"/>
+                                <input type="text" class="form-control" name="search" id="workHour_input" placeholder="查询"/>
                             </td>
                             <td align="center">
-                                <input type="text" class="form-control" name="search" id="efficiency_input" placeholder="模糊查询"/>
+                                <input type="text" class="form-control" name="search" id="efficiency_input" placeholder="查询"/>
                             </td>
                         </tr>
                         </thead>
@@ -206,6 +207,7 @@
                 }
             }
         );
+        loadResourceType();
         loadDataTableData();
     });
     //加载表格数据
@@ -240,16 +242,7 @@
                 },
                 {"data": "code"},
                 {"data": "name"},
-                {"data": "resourceType",
-                   /* "render": function (data, type, row, meta) {
-                        if("0" == data){
-                            return "标准";
-                        }
-                        else{
-                            return "定制";
-                        }
-                    }*/
-                },
+                {"data": "resourceTypeName"},
                 {"data": "workAmount"},
                 {"data": "workHour"},
                 {"data": "efficiency"},
@@ -324,8 +317,7 @@
     //重置
     $('#resetBtn').click(function () {
         $("input[name='search']").val('');
-        $("#code_input")[0].options.selectedIndex = 0;
-        $("#name_input")[0].options.selectedIndex = 0;
+        $("#resourceType_input")[0].options.selectedIndex = 0;
         productCapacityTable.ajax.reload();
     })
 
@@ -451,5 +443,27 @@
             }
         })
     });
+
+    /**
+     * 加载资源类型
+     */
+    function loadResourceType(){
+        $.ajax({
+            type: "post",
+            url: "/sysDictType/selectSysDictTypes",
+            dataType: "json",
+            data:{
+                "code":"resource_type"
+            },
+            success: function (data) {
+                if(data){
+                    $.each(data, function (index, resourceType) {
+                        $("#resourceType_input").append("<option value= " + resourceType.value+ ">" + resourceType.name + "</option>");
+                        $("#resourceType").append("<option value= " + resourceType.value + ">" +  resourceType.name + "</option>");
+                    });
+                }
+            }
+        });
+    }
 </script>
 </html>
