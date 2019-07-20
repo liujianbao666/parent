@@ -1,5 +1,8 @@
 package com.blueview.model;
 
+import lombok.Data;
+
+@Data
 public class Customer {
     /**
      * 主键
@@ -20,36 +23,9 @@ public class Customer {
      * 客户类型见数据字典
      */
     private String customerType;
+    /**
+     *客户类型名称
+     */
+    private String customerTypeName;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(String customerType) {
-        this.customerType = customerType == null ? null : customerType.trim();
-    }
 }

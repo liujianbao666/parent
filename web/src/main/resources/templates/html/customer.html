@@ -65,7 +65,10 @@
                                 <div class="form-group m-form__group row">
                                     <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>客户类型：</label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control m-input" th:field="*{customerType}" id="customerType" required>
+                                        <!--<input type="text" class="form-control m-input" th:field="*{customerType}" id="customerType" required>-->
+                                        <select class="form-control"  name="search" id="customerType">
+                                            <option style='display: none'></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +131,10 @@
                                     <option value="0">标准</option>
                                     <option value="1">定制</option>
                                 </select>-->
-                                <input type="text" class="form-control" name="search" id="customerType_input" placeholder="查询"/>
+                               <!-- <input type="text" class="form-control" name="search" id="customerType_input" placeholder="查询"/>-->
+                                <select class="form-control"  name="search" id="customerType_input">
+                                    <option style='display: none'></option>
+                                </select>
                             </td>
                         </tr>
                         </thead>
@@ -165,6 +171,7 @@
                 }
             }
         );
+        loadCustomerType();
         loadDataTableData();
     });
     //加载表格数据
@@ -199,16 +206,7 @@
                 },
                 {"data": "code"},
                 {"data": "name"},
-                {"data": "customerType",
-                   /* "render": function (data, type, row, meta) {
-                        if("0" == data){
-                            return "标准";
-                        }
-                        else{
-                            return "定制";
-                        }
-                    }*/
-                },
+                {"data": "customerTypeName"},
             ],
             "ajax": {
                 type: "POST",
@@ -216,7 +214,7 @@
                 data: function (d) {
                     d.code = $.trim($('#code_input').val());
                     d.name = $.trim($('#name_input').val());
-                    d.customerType = $.trim($('#customerType_input').val());
+                    d.customerType = $.trim($('#customerType_input option:selected').val());
                     return d;
                 }
             },
@@ -277,8 +275,8 @@
     //重置
     $('#resetBtn').click(function () {
         $("input[name='search']").val('');
-        $("#code_input")[0].options.selectedIndex = 0;
-        $("#name_input")[0].options.selectedIndex = 0;
+        $("#customerType_input")[0].options.selectedIndex = 0;
+        $("#customerType")[0].options.selectedIndex = 0;
         customerTable.ajax.reload();
     })
 
@@ -398,5 +396,27 @@
             }
         })
     });
+
+    /**
+     * 加载客户类型
+     */
+    function loadCustomerType(){
+        $.ajax({
+            type: "post",
+            url: "/sysDictType/selectSysDictTypes",
+            dataType: "json",
+            data:{
+                "code":"custom_type"
+            },
+            success: function (data) {
+                if(data){
+                    $.each(data, function (index, customerType) {
+                        $("#customerType_input").append("<option value= " + customerType.value+ ">" + customerType.name + "</option>");
+                        $("#customerType").append("<option value= " + customerType.value + ">" +  customerType.name + "</option>");
+                    });
+                }
+            }
+        });
+    }
 </script>
 </html>
