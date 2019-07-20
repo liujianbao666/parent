@@ -6,6 +6,7 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="equipment_id" jdbcType="VARCHAR" property="equipmentId" />
+    <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
   </resultMap>
   <sql id="Base_Column_List">
     id, code, name, equipment_id
@@ -17,18 +18,25 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="getMouldsSelective" parameterType="com.blueview.model.Mould" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from mould
-    where 1=1
+    SELECT
+    m.id,
+    m.CODE,
+    m.NAME,
+    m.equipment_id,
+    e.NAME equipment_name
+    FROM
+    mould m
+    LEFT JOIN equipment e ON m.equipment_id = e.id
+    WHERE
+    1 = 1
     <if test="code != null and code !=''">
-      and code = #{code,jdbcType=VARCHAR}
+      and m.code = #{code,jdbcType=VARCHAR}
     </if>
     <if test="name != null and name != ''">
-      and name like  concat('%',#{name},'%')
+      and m.name like  concat('%',#{name},'%')
     </if>
     <if test="equipmentId != null and equipmentId != ''">
-      and equipment_id = #{equipmentId,jdbcType=VARCHAR}
+      and m.equipment_id = #{equipmentId,jdbcType=VARCHAR}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

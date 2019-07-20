@@ -1,5 +1,8 @@
 package com.blueview.model;
 
+import lombok.Data;
+
+@Data
 public class Mould {
     /**
      * 主键
@@ -21,35 +24,9 @@ public class Mould {
      */
     private String equipmentId;
 
-    public Integer getId() {
-        return id;
-    }
+    /**
+     * 所属设备名称
+     */
+    private String  equipmentName;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getEquipmentId() {
-        return equipmentId;
-    }
-
-    public void setEquipmentId(String equipmentId) {
-        this.equipmentId = equipmentId == null ? null : equipmentId.trim();
-    }
 }
