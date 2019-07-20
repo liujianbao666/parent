@@ -52,7 +52,7 @@ public class SupplierServiceImpl implements SupplierService {
         List<Supplier> supplierSelective = supplierMapper.getSuppliersSelective(supplier);
         for (Supplier suppliereach:supplierSelective  ) {
             SysDictType sysDictType = new SysDictType();
-            sysDictType.setParentId("supplier_type");
+            sysDictType.setCode("supplier_type");
             sysDictType.setValue(suppliereach.getSupplierType());
             List<SysDictType> sysDictTypesSelective = sysDictTypeMapper.getSysDictTypesSelective(sysDictType);
             suppliereach.setSupplierType(sysDictTypesSelective.get(0).getName());

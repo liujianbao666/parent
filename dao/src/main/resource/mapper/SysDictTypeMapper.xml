@@ -20,20 +20,17 @@
   <select id="getSysDictTypesSelective" parameterType="com.blueview.model.SysDictType" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from sys_dict_type
-    where 1=1
-    <if test="parentId != null and parentId != ''">
-      and parent_id = #{parentId,jdbcType=VARCHAR}
-    </if>
-    <if test="code != null and code != ''">
-      and code = #{code,jdbcType=VARCHAR}
-    </if>
-    <if test="value != null and value != ''">
-      and value = #{value,jdbcType=VARCHAR}
-    </if>
-    <if test="name != null and name != ''">
-      and name like  concat('%',#{name},'%')
-    </if>
+    FROM
+    sys_dict_type
+    WHERE
+    parent_id = (
+    SELECT
+    id
+    FROM
+    sys_dict_type
+    WHERE
+     code = #{code,jdbcType=VARCHAR}
+    )
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sys_dict_type

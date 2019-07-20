@@ -165,8 +165,8 @@
                 }
             }
         );
+        loadSupplierType();
         loadDataTableData();
-        loadSupplierType()
     });
     //加载表格数据
     function loadDataTableData() {
@@ -269,8 +269,7 @@
     //重置
     $('#resetBtn').click(function () {
         $("input[name='search']").val('');
-        $("#code_input")[0].options.selectedIndex = 0;
-        $("#name_input")[0].options.selectedIndex = 0;
+        $("#supplierType_input")[0].options.selectedIndex = 0;
         supplierTable.ajax.reload();
     })
 
@@ -400,7 +399,7 @@
             url: "/sysDictType/selectSysDictTypes",
             dataType: "json",
             data:{
-                "parentId":"supplier_type"
+                "code":"supplier_type"
             },
             success: function (data) {
                 if(data){
