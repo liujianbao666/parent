@@ -180,9 +180,9 @@
                 }
             }
         );
-        loadDataTableData();
         loadDepartmentType();
         loadCostCenter();
+        loadDataTableData();
     });
     //加载表格数据
     function loadDataTableData() {
@@ -216,17 +216,8 @@
                 },
                 {"data": "code"},
                 {"data": "name"},
-                {"data": "departmentType",
-                   /* "render": function (data, type, row, meta) {
-                        if("0" == data){
-                            return "标准";
-                        }
-                        else{
-                            return "定制";
-                        }
-                    }*/
-                },
-                {"data": "costCenterid"}
+                {"data": "departmenttypename"},
+                {"data": "costCenter.name"}
             ],
             "ajax": {
                 type: "POST",
@@ -234,8 +225,8 @@
                 data: function (d) {
                     d.code = $.trim($('#code_input').val());
                     d.name = $.trim($('#name_input').val());
-                    d.departmentType = $.trim($('#departmentType_input').val());
-                    d.costCenterid = $.trim($('#costCenterid_input').val());
+                    d.departmentType = $.trim($('#departmentType_input option:selected').val());
+                    d.costCenterid = $.trim($('#costCenterid_input option:selected').val());
                     return d;
                 }
             },
@@ -296,8 +287,8 @@
     //重置
     $('#resetBtn').click(function () {
         $("input[name='search']").val('');
-        $("#code_input")[0].options.selectedIndex = 0;
-        $("#name_input")[0].options.selectedIndex = 0;
+        $("#departmentType_input")[0].options.selectedIndex = 0;
+        $("#costCenterid_input")[0].options.selectedIndex = 0;
         departmentTable.ajax.reload();
     })
 
@@ -360,7 +351,6 @@
                         $('#code').val(data.code);
                         $('#departmentType').val(data.departmentType);
                         $('#costCenterid').val(data.costCenterid);
-
                         $('#addDepartmentModal').modal('show');
                     } else {
                         swal('提示', data.msg, 'warning');
@@ -428,13 +418,13 @@
             url: "/sysDictType/selectSysDictTypes",
             dataType: "json",
             data:{
-                "parentId":"department_type"
+                "code":"department_type"
             },
             success: function (data) {
                 if(data){
                     $.each(data, function (index, department) {
-                        $("#departmentType_input").append("<option value= " + department.id+ ">" + department.name + "</option>");
-                        $("#departmentType").append("<option value= " + department.id + ">" +  department.name + "</option>");
+                        $("#departmentType_input").append("<option value= " + department.value+ ">" + department.name + "</option>");
+                        $("#departmentType").append("<option value= " + department.value + ">" +  department.name + "</option>");
                     });
                 }
             }

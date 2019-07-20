@@ -26,7 +26,7 @@ public class DepartmentController {
     public String addDepartment(Model model) {
         Department department = new Department();
         model.addAttribute("department", department);
-        return "html/department";
+        return "html/departmentreegrid";
     }
 
     @RequestMapping(value = "/selectDepartments")

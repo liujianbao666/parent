@@ -23,7 +23,10 @@ public class Department {
      * 类型见数据字典
      */
     private String departmentType;
-
+    /**
+     * 字典表中的部门名称
+     */
+    private String departmenttypename;
     /**
      * 成本中心
      */
@@ -34,5 +37,8 @@ public class Department {
      */
     private String parentId;
 
-
+    /**
+     * 成本中心
+     */
+    private CostCenter costCenter;
 }
