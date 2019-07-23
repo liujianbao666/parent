@@ -1,7 +1,22 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="themes/default/list_css::top"></head>
 <body class="hold-transition skin-blue sidebar-mini">
+<style>
+
+    body {
+        margin: 40px 10px;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+
+    #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+</style>
 <div class="wrapper">
 
     <div th:replace="themes/default/header::header"></div>
@@ -12,22 +27,6 @@
     <div sec:authorize="hasRole('ROLE_USER')">
         <div th:replace="themes/default/user_nav::nav"></div>
     </div>
-
-    <style>
-        * {margin: 0;padding: 0}
-        #calendar {width: 210px;margin: 100px auto;overflow: hidden;border: 1px solid #000;padding: 20px;position: relative}
-        #calendar h4 {text-align: center;margin-bottom: 10px}
-        #calendar .a1 {position: absolute;top: 20px;left: 20px;}
-        #calendar .a2 {position: absolute;top: 20px;right: 20px;}
-        #calendar .week {height: 30px;line-height: 20px;border-bottom: 1px solid #000;margin-bottom: 10px}
-        #calendar .week li {float: left;width: 30px;height: 30px;text-align: center;list-style: none;}
-        #calendar .dateList {overflow: hidden;clear: both}
-        #calendar .dateList li {float: left;width: 30px;height: 30px;text-align: center;line-height: 30px;list-style: none;}
-        #calendar .dateList .ccc {color: #ccc;}
-        #calendar .dateList .red {background: #F90;color: #fff;}
-        #calendar .dateList .sun {color: #f00;}
-    </style>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <section class="content-header">
@@ -41,21 +40,8 @@
                 <li class="active">工作日历列表</li>
             </ol>
         </section>
-        <div id="calendar">
-            <h4>2013年10月</h4>
-            <a href="##" class="a1">上月</a>
-            <a href="##" class="a2">下月</a>
-            <ul class="week">
-                <li>日</li>
-                <li>一</li>
-                <li>二</li>
-                <li>三</li>
-                <li>四</li>
-                <li>五</li>
-                <li>六</li>
 
-            </ul>
-            <ul class="dateList"></ul>
+        <div id="calendar">
         </div>
 
         <!-- /.content -->
@@ -68,99 +54,33 @@
 </body>
 <script th:replace="themes/default/list_js::importjs"></script>
 <script type="text/javascript">
-    $(function() {
 
-        //必要的数据
-        //今天的年 月 日 ；本月的总天数；本月第一天是周几？？？
-        var iNow=0;
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
 
-        function run(n) {
-
-            var oDate = new Date(); //定义时间
-            oDate.setMonth(oDate.getMonth()+n);//设置月份
-            var year = oDate.getFullYear(); //年
-            var month = oDate.getMonth(); //月
-            var today = oDate.getDate(); //日
-
-            //计算本月有多少天
-            var allDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-
-            //判断闰年
-            if(month == 1) {
-                if(year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
-                    allDay = 29;
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'interaction', 'dayGrid' ],
+            height : 650,
+            aspectRatio:6,
+            defaultDate: '2019-06-12',
+            weekNumbers:true,
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+            dayNamesShort: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+            events: [
+                {
+                    title: '事件',
+                    start: '2019-06-01'
                 }
-            }
-
-            //判断本月第一天是星期几
-            oDate.setDate(1); //时间调整到本月第一天
-            var week = oDate.getDay(); //读取本月第一天是星期几
-
-            //console.log(week);
-            $(".dateList").empty();//每次清空
-            //插入空白
-
-            for(var i = 0; i < week; i++) {
-                $(".dateList").append("<li></li>");
-            }
-
-            //日期插入到dateList
-            for(var i = 1; i <= allDay; i++) {
-                $(".dateList").append("<li>" + i + "</li>")
-            }
-            //标记颜色=====================
-            $(".dateList li").each(function(i, elm){
-                //console.log(index,elm);
-                var val = $(this).text();
-                //console.log(val);
-                if (n==0) {
-                    if(val<today){
-                        $(this).addClass('ccc')
-                    }else if(val==today){
-                        $(this).addClass('red')
-                    }else if(i%7==0  ||  i%7==6   ){
-                        $(this).addClass('sun')
-                    }
-                }else if(n<0){
-                    $(this).addClass('ccc')
-                }else if(i%7==0  ||  i%7==6   ){
-                    $(this).addClass('sun')
-                }
-            });
-
-            //定义标题日期
-            $("#calendar h4").text(year + "年" + (month + 1) + "月");
-        };
-        run(0);
-
-        $(".a1").click(function(){
-            iNow--;
-            run(iNow);
+            ]
         });
 
-        $(".a2").click(function(){
-            iNow++;
-            run(iNow);
-        })
+        calendar.render();
     });
-    var workCalendarTable;
 
-    $(function () {
-        $("#workCalendarUpdateForm").validate({
-                highlight: function (e) {
-                    $(e).closest('.form-group').addClass('has-error');
-                },
-                unhighlight: function (e) {
-                    $(e).closest('.form-group').removeClass('has-error');
-                }
-                ,
-                submitHandler: function () {
-                    addWorkCalendar();
-                }
-            }
-        );
-        // loadDataTableData();
-    });
     //加载表格数据
     function loadDataTableData() {
         workCalendarTable = $('#workCalendarList').DataTable({
@@ -238,163 +158,5 @@
         })
     }
 
-    //实现全选功能
-    $('#checkAll').on('click', function () {
-        if (this.checked) {
-            $(this).attr('checked', 'checked');
-            $("input[name='ckb_id']").each(function () {
-                this.checked = true;
-            });
-        } else {
-            $(this).removeAttr('checked');
-            $("input[name='ckb_id']").each(function () {
-                this.checked = false;
-            });
-        }
-    });
-
-    function childclick(id) {
-        if ($(this).is(":checked") == false) {
-            $("#checkAll").prop("checked", false);
-        }
-    }
-
-    //回车键绑定
-    $("input[name='search']").bind('keypress', function (event) {
-        if (event.keyCode == "13") {
-            workCalendarTable.ajax.reload();
-        }
-    });
-
-    //查询
-    $('#queryBtn').click(function () {
-        workCalendarTable.ajax.reload();
-    })
-    //重置
-    $('#resetBtn').click(function () {
-        $("input[name='search']").val('');
-        $("#code_input")[0].options.selectedIndex = 0;
-        $("#name_input")[0].options.selectedIndex = 0;
-        workCalendarTable.ajax.reload();
-    })
-
-    //添加
-    function addWorkCalendar() {
-        var params = {
-            id: $.trim($('#id').val()),
-            name: $.trim($('#name').val()),
-            code: $.trim($('#code').val()),
-            supplierId: $.trim($('#supplierId').val()),
-            receiveId: $.trim($('#receiveId').val()),
-        }
-        $.ajax({
-            type: "post",
-            data: params,
-            url: "/workCalendar/saveOrUpdateWorkCalendar",
-            dataType: "json",
-            success: function (data) {
-                if (data.code) {
-                    swal('提示', data.msg, 'success');
-                    //刷新当前
-                    setTimeout(function () {
-                        history.go(0);
-                    }, 1000);
-                } else {
-                    swal('提示', data.msg, 'warning');
-                }
-            }
-        })
-    }
-    //添加
-    $('#addWorkCalendarBtn').click(function () {
-        //清空 文本框
-        $('.m-input').val('');
-        $('#addWorkCalendarModal').modal('show');
-    });
-    //修改
-    $('#updateWorkCalendarBtn').click(function () {
-        //清空
-        $('.m-input').val('');
-        var checkedBox = $("input[name='ckb_id']:checked");
-        if (checkedBox.length != 1) {
-            swal('提示', '请选择一条记录，修改！', 'warning');
-            return;
-        }
-        var params = {
-            id: $('input[name="ckb_id"]:checked').val()
-        };
-        $.ajax({
-            url: '/workCalendar/selectByPrimaryKey',
-            data: params,
-            dataType: 'json',
-            type: "post",
-            success: function (data) {
-                if (data) {
-                    // 1,提示
-                    if (data.code) {
-                        $('#id').val(data.id);
-                        $('#name').val(data.name);
-                        $('#code').val(data.code);
-                        $('#supplierId').val(data.supplierId);
-                        $('#receiveId').val(data.receiveId);
-
-                        $('#addWorkCalendarModal').modal('show');
-                    } else {
-                        swal('提示', data.msg, 'warning');
-                    }
-                }
-            }
-        });
-    })
-
-    //删除
-    $('#deleteWorkCalendarBtn').click(function () {
-        var checkedBox = $("input[name='ckb_id']:checked");
-        if (checkedBox.length == 0) {
-            swal('提示', '至少选择一条记录，删除！', 'warning');
-            return;
-        }
-        var ids = [];
-        $('input[name="ckb_id"]:checked').each(function () {
-            ids.push($(this).val());
-        });
-        swal({
-            title: '警告',
-            text: '确定删除：' + ids.length + '条记录？',
-            type: 'error',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: '确定！',
-            cancelButtonText: '取消！',
-        }).then(function (obj) {
-            if (obj.value) {
-                var params = {
-                    ids: ids
-                };
-                $.ajax({
-                    url: '/workCalendar/deleteWorkCalendar',
-                    dataType: 'json',
-                    type: "post",
-                    data: params,
-                    traditional: true,
-                    success: function (data) {
-                        if (data) {
-                            // 1,提示
-                            if (data.code) {
-                                swal('提示', data.msg, 'success');
-                                //刷新当前
-                                setTimeout(function () {
-                                    history.go(0);
-                                }, 1000);
-                            } else {
-                                swal('提示', data.msg, 'warning');
-                            }
-                        }
-                    }
-                });
-            }
-        })
-    });
 </script>
 </html>

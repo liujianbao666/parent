@@ -42,7 +42,14 @@ public class OrderClassController {
         result.put("data", orderClasss.getList());
         return result;
     }
+    @RequestMapping(value = "/selectAllOrderClasss")
+    @ResponseBody
+    public List<OrderClass> selectAllOrderClasss(Integer draw, Integer start, Integer length, OrderClass orderClass) {
 
+        List<OrderClass> orderClasss = orderClassService.getOrderClassesSelective(orderClass);
+
+        return orderClasss;
+    }
     /**
      * 添加
      */

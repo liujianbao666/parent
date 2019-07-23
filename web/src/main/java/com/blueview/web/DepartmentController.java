@@ -1,6 +1,8 @@
 package com.blueview.web;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.blueview.model.Department;
 import com.blueview.service.DepartmentService;
 import com.github.pagehelper.PageInfo;
@@ -22,11 +24,41 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    @RequestMapping(value = "/manage")
-    public String addDepartment(Model model) {
+    @RequestMapping(value = "/tree")
+    public String treeDepartment(Model model) {
         Department department = new Department();
         model.addAttribute("department", department);
-        return "html/departmentreegrid";
+        return "html/departmenttreegrid";
+    }
+    @RequestMapping(value = "/selectAllDepartmentsTree")
+    @ResponseBody
+    public JSONArray selectAllDepartmentsTree(@RequestParam(required = false) Department department) {
+        JSONArray result = new JSONArray();
+
+        List<Department> departments = departmentService.getDepartmentsSelective(department);
+        for(Department depart:departments){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id",depart.getId());
+            /**
+             * 父节点
+             */
+            jsonObject.put("pid",depart.getParentId());
+            jsonObject.put("name",depart.getName());
+            jsonObject.put("code",depart.getCode());
+            jsonObject.put("departmentType",depart.getDepartmentType());
+            jsonObject.put("costCenterName",depart.getCostCenter().getName());
+            jsonObject.put("orderClassName",depart.getOrderClassId());
+            result.add(jsonObject);
+        }
+
+
+        return result;
+    }
+    @RequestMapping(value = "/manage")
+    public String toDepartment(Model model) {
+        Department department = new Department();
+        model.addAttribute("department", department);
+        return "html/department";
     }
 
     @RequestMapping(value = "/selectDepartments")

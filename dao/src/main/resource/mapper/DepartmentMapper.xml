@@ -7,8 +7,9 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="department_type" jdbcType="VARCHAR" property="departmentType" />
     <result column="departmenttypename" jdbcType="VARCHAR" property="departmenttypename" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="cost_centerid" jdbcType="INTEGER" property="costCenterid" />
-    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="order_class_id" jdbcType="INTEGER" property="orderClassId" />
     <association property="costCenter" javaType="com.blueview.model.CostCenter">
       <id property="id" column="cost_centerid" />
       <result property="code" column="code" />
@@ -33,6 +34,7 @@
     dict.name departmenttypename,
     de.cost_centerid,
     de.parent_id,
+    de.order_class_id,
     cc. NAME costcentername
     FROM
     department de
@@ -54,7 +56,7 @@
       and de.cost_centerid = #{costCenterid,jdbcType=INTEGER}
     </if>
     <if test="parentId != null and parentId != '' ">
-      and de.parent_id = #{parentId,jdbcType=VARCHAR}
+      and de.parent_id = #{parentId,jdbcType=INTEGER}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -66,7 +68,7 @@
       department_type, cost_centerid, parent_id
       )
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{departmentType,jdbcType=VARCHAR}, #{costCenterid,jdbcType=INTEGER}, #{parentId,jdbcType=VARCHAR}
+      #{departmentType,jdbcType=VARCHAR}, #{costCenterid,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.blueview.model.Department">
@@ -88,7 +90,10 @@
         cost_centerid,
       </if>
       <if test="parentId != null">
-        parent_id,
+      parent_id,
+    </if>
+      <if test="orderClassId != null">
+        order_class_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -108,7 +113,10 @@
         #{costCenterid,jdbcType=VARCHAR},
       </if>
       <if test="parentId != null">
-        #{parentId,jdbcType=VARCHAR},
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="orderClassId != null">
+        #{orderClassId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -128,7 +136,7 @@
         cost_centerid = #{costCenterid,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=VARCHAR},
+        parent_id = #{parentId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -139,7 +147,7 @@
       name = #{name,jdbcType=VARCHAR},
       department_type = #{departmentType,jdbcType=VARCHAR},
       cost_centerid = #{costCenterid,jdbcType=INTEGER},
-      parent_id = #{parentId,jdbcType=VARCHAR}
+      parent_id = #{parentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -35,10 +35,15 @@ public class Department {
     /**
      * 上级机构
      */
-    private String parentId;
+    private Integer parentId;
 
     /**
      * 成本中心
      */
     private CostCenter costCenter;
+
+    /**
+     * 班次
+     */
+    private Integer orderClassId;
 }
