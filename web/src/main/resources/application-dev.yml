@@ -11,3 +11,8 @@ spring:
     cache: false
     servlet:
       content-type: text/html
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8

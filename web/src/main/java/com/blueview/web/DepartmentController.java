@@ -54,6 +54,29 @@ public class DepartmentController {
 
         return result;
     }
+
+    @RequestMapping(value = "/LoadDepartmentsTree")
+    @ResponseBody
+    public JSONArray LoadDepartmentsTree(@RequestParam(required = false) Department department) {
+        JSONArray result = new JSONArray();
+        List<Department> departments = departmentService.getDepartmentsSelective(department);
+        for(Department depart:departments){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id",depart.getId());
+            /**
+             * 父节点
+             */
+            if(depart.getParentId() == null){
+                jsonObject.put("parent","#");
+            }else{
+                jsonObject.put("parent",depart.getParentId());
+            }
+            jsonObject.put("text",depart.getName());
+            result.add(jsonObject);
+        }
+
+        return result;
+    }
     @RequestMapping(value = "/manage")
     public String toDepartment(Model model) {
         Department department = new Department();

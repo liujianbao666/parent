@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,6 +41,13 @@ public class WorkCalendarServiceImpl implements WorkCalendarService {
     @Override
     public WorkCalendar selectByPrimaryKey(Integer id) {
         return workCalendarMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<WorkCalendar> selectByDate(Date date) {
+        WorkCalendar record = new WorkCalendar();
+        record.setDate(date);
+        return  workCalendarMapper.getWorkCalendarsSelective(record);
     }
 
     @Override

@@ -20,10 +20,10 @@
     <include refid="Base_Column_List" />
     from work_calendar
     where 1=1
-    <if test="date != null and date != ''">
+    <if test="date != null">
       and date = #{date,jdbcType=DATE}
     </if>
-    <if test="isWork != null and isWork != ''">
+    <if test="isWork != null">
       and is_work = #{isWork,jdbcType=BIT}
     </if>
   </select>

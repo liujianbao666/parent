@@ -7,7 +7,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -42,23 +42,22 @@ public class WorkCalendarController {
         result.put("data", workCalendars.getList());
         return result;
     }
-
+    @RequestMapping(value = "/selectWorkCalendarsSelective")
+    @ResponseBody
+    public List<WorkCalendar> selectWorkCalendarsSelective(WorkCalendar workCalendar) {
+        List<WorkCalendar> workCalendars = workCalendarService.getWorkCalendarsSelective(workCalendar);
+        return workCalendars;
+    }
     /**
      * 添加
      */
     @RequestMapping("/saveOrUpdateWorkCalendar")
     @ResponseBody
-    public Map<String, Object> saveOrUpdateWorkCalendar(@ModelAttribute(value = "workCalendar")WorkCalendar workCalendar) {
+    public Map<String, Object> saveOrUpdateWorkCalendar(@RequestBody WorkCalendar workCalendar) {
         Map<String, Object> map = new HashMap<>();
         //查询已存在
-        WorkCalendar workCalendartmp = new WorkCalendar();
-//        workCalendartmp.setCode(workCalendar.getCode());
-        List<WorkCalendar> workCalendarsSelective = workCalendarService.getWorkCalendarsSelective(workCalendartmp);
-        if(workCalendar.getId() == null|| "".equals(workCalendar.getId()) ){
-            if (workCalendarsSelective.size() > 0) {
-                map.put("msg", "编码已存在！");
-                return map;
-            }
+        List<WorkCalendar> workCalendars = workCalendarService.selectByDate(workCalendar.getDate());
+        if(workCalendars.size() <= 0){
             int n = workCalendarService.insertSelective(workCalendar);
             if (n == 1) {
                 map.put("msg", "添加成功！");
@@ -67,20 +66,13 @@ public class WorkCalendarController {
             }
             map.put("msg", "添加失败！");
         }else{//如果不为空时为修改
-            if (workCalendarsSelective.size() < 2) {
-                //数据中就一条数据看是不是自己
-                if(workCalendarsSelective.size() == 0 || (int)workCalendarsSelective.get(0).getId()==(int)workCalendar.getId()){
-                    int n = workCalendarService.updateByPrimaryKeySelective(workCalendar);
-                    if (n == 1) {
-                        map.put("msg", "修改成功！");
-                        map.put("code", 200);
-                        return map;
-                    }
-                }
-                map.put("msg", "编码已存在！");
+            workCalendar.setId(workCalendars.get(0).getId());
+            int n = workCalendarService.updateByPrimaryKeySelective(workCalendar);
+            if (n == 1) {
+                map.put("msg", "修改成功！");
+                map.put("code", 200);
                 return map;
             }
-
             map.put("msg", "修改失败！");
         }
 

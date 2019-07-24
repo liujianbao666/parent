@@ -4,15 +4,15 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <style>
 
-    body {
-        margin: 40px 10px;
-        padding: 0;
-        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-        font-size: 14px;
-    }
+    /*body {*/
+    /*    margin: 40px 10px;*/
+    /*    padding: 0;*/
+    /*    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;*/
+    /*    font-size: 14px;*/
+    /*}*/
 
     #calendar {
-        max-width: 900px;
+        max-width: 800px;
         margin: 0 auto;
     }
 
@@ -40,7 +40,49 @@
                 <li class="active">工作日历列表</li>
             </ol>
         </section>
-
+        <div class="modal fade" id="addWorkCalendarModal" tabindex="-1" role="dialog" aria-labelledby="addUpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="addUpModalLabel">
+                            工作日历信息
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" th:object="${workCalendar}" id="workUpdateForm" method="post">
+                            <input type="hidden" class="form-control m-input" th:field="*{id}" id="id">
+                            <div class="form-control-inline">
+                                <div class="form-group m-form__group row">
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>时间：</label>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control m-input" th:field="*{date}" id="date" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-control-inline">
+                                <div class="form-group m-form__group row">
+                                    <label class="col-lg-3 col-form-label"><span style="color:red;">*</span>是否工作：</label>
+                                    <div class="col-lg-6">
+                                        <!--<input type="text" class="form-control m-input" th:field="*{isWork}" id="isWork" required>-->
+                                        <select class="form-control"  name="search" id="isWork">
+                                            <option value="true">是</option>
+                                            <option value="false" selected>否</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="submit" class="btn btn-primary">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
         <div id="calendar">
         </div>
 
@@ -54,109 +96,100 @@
 </body>
 <script th:replace="themes/default/list_js::importjs"></script>
 <script type="text/javascript">
-
+    $(function () {
+        $("#workUpdateForm").validate({
+                highlight: function (e) {
+                    $(e).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (e) {
+                    $(e).closest('.form-group').removeClass('has-error');
+                }
+                ,
+                submitHandler: function () {
+                    addWorkCalendar();
+                }
+            }
+        );
+    })
+    var calendar;
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
+          calendar = new FullCalendar.Calendar(calendarEl, {
             plugins: [ 'interaction', 'dayGrid' ],
             height : 650,
             aspectRatio:6,
-            defaultDate: '2019-06-12',
+            defaultDate: '2019-07-23',
+            // navLinks: true, // can click day/week names to navigate views
+            //允许用户通过点击或拖动选择日历中的对象
+            selectable: true,
+            locale:'zh-cn',
             weekNumbers:true,
             editable: true,
             eventLimit: true, // allow "more" link when too many events
-            monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-            monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-            dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
-            dayNamesShort: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
-            events: [
-                {
-                    title: '事件',
-                    start: '2019-06-01'
-                }
-            ]
+            events:function(fetchInfo, successCallback, failureCallback){
+                //alert("进入到查询日程的方法里.内部")
+                $.ajax({
+                    type : "post",
+                    data:{"isWork":false},
+                    url : "/workCalendar/selectWorkCalendarsSelective",
+                    success : function(data) {
+                        var events = [];
+                        if (data.length == 0){
+                            events.push({
+                                title: '工作日',
+                                start:start,
+                                end:end
+                            });
+                        }else{
+                            for(var i=0; i < data.length ; i++){
+                                events.push({
+                                    title: '休息日',
+                                    start:data[i].date,
+                                    allDay:true,
+                                    textColor:"red"
+                                });
+                                $("td[data-date='"+data[i].date+"']").css('color','red');
+                            }
+                        }
+                        successCallback(events);
+                    }
+                });
+            },
+            select: function(info) {
+                $('#date').val( info.startStr);
+                $('#addWorkCalendarModal').modal('show');
+            }
         });
 
         calendar.render();
     });
-
-    //加载表格数据
-    function loadDataTableData() {
-        workCalendarTable = $('#workCalendarList').DataTable({
-            "aLengthMenu": [10, 25, 50, 100],
-            "bAutoWidth": true,
-            "sScrollX":true,
-            'bPaginate': true,
-            "bDestory": true,
-            "bRetrieve": true,
-            "bFilter": false,
-            "bSort": false,
-            "bProcessing": true,
-            "serverSide": true,
-            "iDisplayLength": 10,
-            "columns": [
-                {
-                    "sClass": "text-center",
-                    "data": "id",
-                    "render": function (data, type) {
-                        return "<div align='center'><input type='checkbox' onclick = childclick() name='ckb_id' value='" + data + "'></div>";
-                    },
-                    "bSortable": false
-                },
-                {
-                    "data": null,
-                    render: function (data, type, row, meta) {
-                        var startIndex = meta.settings._iDisplayStart;
-                        return (startIndex + meta.row + 1).toString();
-                    }
-                },
-                {"data": "code"},
-                {"data": "name"},
-                {"data": "supplierId",
-                   /* "render": function (data, type, row, meta) {
-                        if("0" == data){
-                            return "标准";
-                        }
-                        else{
-                            return "定制";
-                        }
-                    }*/
-                },
-                {"data": "receiveId"}
-            ],
-            "ajax": {
-                type: "POST",
-                url: '/workCalendar/selectWorkCalendars',
-                data: function (d) {
-                    d.code = $.trim($('#code_input').val());
-                    d.name = $.trim($('#name_input').val());
-                    d.supplierId = $.trim($('#supplierId_input').val());
-                    d.receiveId = $.trim($('#receiveId_input').val());
-                    return d;
+    //添加
+    function addWorkCalendar() {
+        var params = {
+            id: $.trim($('#id').val()),
+            date: $.trim($('#date').val()),
+            isWork: $.trim($('#isWork').val()),
+        }
+        $.ajax({
+            type: "post",
+            data: JSON.stringify(params),
+            url: "/workCalendar/saveOrUpdateWorkCalendar",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                if (data.id) {
+                    swal('提示', data.msg, 'success');
+                    //刷新当前
+                    setTimeout(function () {
+                        history.go(0);
+                    }, 1000);
+                } else {
+                    swal('提示', data.msg, 'warning');
                 }
-            },
-            "fnCreatedRow": function (nRow, aData, iDataIndex) {
-                $(nRow).css("cursor", "pointer");
-            },
-            "oLanguage": {
-                "sProcessing": "努力加载中...",
-                "sLengthMenu": "显示 _MENU_ 项结果",
-                "sZeroRecords": "没有数据",
-                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                "sInfoPostFix": "",
-                "sSearch": "搜索:",
-                "oPaginate": {
-                    "sFirst": "首页",
-                    "sPrevious": "上页",
-                    "sNext": "下页",
-                    "sLast": "末页"
-                }
+                $('#addWorkCalendarModal').modal('hide');
+                calendar.refetchEvents();
             }
         })
     }
-
 </script>
 </html>

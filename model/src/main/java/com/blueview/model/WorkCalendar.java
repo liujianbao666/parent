@@ -1,7 +1,11 @@
 package com.blueview.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
+@Data
 public class WorkCalendar {
     /**
      * 主键
@@ -11,34 +15,13 @@ public class WorkCalendar {
     /**
      * 编码
      */
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date date;
 
     /**
-     * 名称
+     * 是否工作
      */
     private Boolean isWork;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Boolean getIsWork() {
-        return isWork;
-    }
-
-    public void setIsWork(Boolean isWork) {
-        this.isWork = isWork;
-    }
 }

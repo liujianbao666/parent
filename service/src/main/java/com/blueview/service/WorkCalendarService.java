@@ -3,6 +3,7 @@ package com.blueview.service;
 import com.blueview.model.WorkCalendar;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Date;
 import java.util.List;
 
 public interface WorkCalendarService {
@@ -40,6 +41,13 @@ public interface WorkCalendarService {
      * @return
      */
     WorkCalendar selectByPrimaryKey(Integer id);
+
+    /**
+     * 按日期查询
+     * @param date
+     * @return
+     */
+    List<WorkCalendar> selectByDate(Date date);
 
     /**
      * 分页查询

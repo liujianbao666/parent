@@ -67,3 +67,17 @@ Docs & License: https://fullcalendar.io/
   /* work around the way we do column resizing and ensure a minimum width */
   display: inline-block;
   min-width: 1.25em; }
+
+.fc-sun {
+  color: red;
+}
+
+.holiday {
+  color: red;
+}
+/*今天背景色和字体颜色chocolate */
+.fc-unthemed td.fc-today {
+  background: #FF6633;
+  color:#3300FF ;
+  font-weight:bold;
+}
