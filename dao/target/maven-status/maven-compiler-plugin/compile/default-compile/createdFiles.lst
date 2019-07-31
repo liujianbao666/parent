@@ -1,0 +1,13 @@
+com\blueview\dao\CompanyMapper.class
+com\blueview\dao\ProductCapacityMapper.class
+com\blueview\dao\SupplierMapper.class
+com\blueview\dao\DepartmentMapper.class
+com\blueview\dao\EquipmentMapper.class
+com\blueview\dao\SysDictTypeMapper.class
+com\blueview\dao\EmployerMapper.class
+com\blueview\dao\JobMapper.class
+com\blueview\dao\WorkCalendarMapper.class
+com\blueview\dao\OrderClassMapper.class
+com\blueview\dao\CostCenterMapper.class
+com\blueview\dao\CustomerMapper.class
+com\blueview\dao\MouldMapper.class

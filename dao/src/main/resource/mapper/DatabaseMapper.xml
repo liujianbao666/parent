@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blueview.dao.DatabaseMapper">
+    <select id="getRecordCount" resultType="int">
+        select count(1) from ${tableName}
+    </select>
+
+    <select id="getCurDataBaseName" resultType="string">
+        select database();
+    </select>
+    <select id="getTableDetail" resultType="java.util.Map">
+        SELECT
+         col.column_name,col.column_comment,col.column_type,col.column_key
+        FROM
+            information_schema.columns col
+        WHERE
+            table_name = #{tableName}
+            <if test="columnName != null">
+                and column_name = #{columnName}
+            </if>
+
+        AND table_schema = database()
+    </select>
+    <select id="getDataBaseTableName" resultType="java.util.Map">
+        select table_name,SUBSTRING_INDEX(TABLE_COMMENT, ';', 1) comment from information_schema.tables where table_schema=database()
+    </select>
+
+    <select id="isTargetTableExistInDB" resultType="string">
+        SELECT table_name FROM information_schema.tables WHERE table_schema = #{dataBaseName} and TABLE_NAME = #{tableName}
+    </select>
+
+    <!-- 获取当前表的创建表语句和表名称 -->
+    <select id="showCretaTable" resultType="java.util.Map" parameterType="java.lang.String">
+        show create table ${tableName}
+    </select>
+
+    <update id="alterTableName">
+        alter table ${originalTableName} rename ${newTableName}
+    </update>
+
+    <update id="truncateTable">
+        truncate table ${tableName}
+    </update>
+
+    <update id="createNewTableAndInsertData">
+        create table ${newTableName} as select * from ${originalTableName}
+    </update>
+    <!-- 删除表 -->
+    <update id="dropTable" parameterType="java.lang.String">
+        drop table IF EXISTS ${tableName}
+    </update>
+
+    <!--创建表 -->
+    <update id="createNewTable">
+        create table ${tableName} (
+        id int NOT NULL auto_increment COMMENT '主键',
+        <foreach collection="coll.entrySet()" open="" separator="," close="" index="key" item="val">
+            ${key}  ${val}
+        </foreach>
+        ,PRIMARY KEY  (`id`)
+        )  comment= #{tableComment} ENGINE=INNODB DEFAULT CHARSET=utf8;
+    </update>
+    <!--修改表注释 -->
+    <update id="updateTableComment">
+        alter table ${tableName} comment #{tableComment}
+    </update>
+    <!--添加字段 -->
+    <update id="addColumn">
+        alter table ${tableName} add
+        <foreach collection="coll.entrySet()" open="(" separator="," close=")" index="key" item="val">
+            ${key}  ${val}
+        </foreach>
+    </update>
+
+    <!--删除字段 -->
+    <update id="dropColumn">
+        alter table ${tableName} drop column  ${columnName}
+    </update>
+
+    <!--修改字段名称及类型 -->
+    <update id="updateColumnName">
+        alter table ${tableName} change ${oldColumn} ${newColumn} ${columnType};
+    </update>
+</mapper>

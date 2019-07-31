@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blueview.dao.TablemanageMapper">
+  <resultMap id="BaseResultMap" type="com.blueview.model.Tablemanage">
+    <result column="main_table" jdbcType="VARCHAR" property="mainTable" />
+    <result column="is_synchronized" jdbcType="BIT" property="isSynchronized" />
+    <result column="side_table" jdbcType="VARCHAR" property="sideTable" />
+    <result column="system" jdbcType="VARCHAR" property="system" />
+  </resultMap>
+  <insert id="insert" parameterType="com.blueview.model.Tablemanage">
+    insert into tablemanage (main_table, is_synchronized, side_table, 
+      system)
+    values (#{mainTable,jdbcType=VARCHAR}, #{isSynchronized,jdbcType=BIT}, #{sideTable,jdbcType=VARCHAR}, 
+      #{system,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.blueview.model.Tablemanage">
+    insert into tablemanage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mainTable != null">
+        main_table,
+      </if>
+      <if test="isSynchronized != null">
+        is_synchronized,
+      </if>
+      <if test="sideTable != null">
+        side_table,
+      </if>
+      <if test="system != null">
+        system,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mainTable != null">
+        #{mainTable,jdbcType=VARCHAR},
+      </if>
+      <if test="isSynchronized != null">
+        #{isSynchronized,jdbcType=BIT},
+      </if>
+      <if test="sideTable != null">
+        #{sideTable,jdbcType=VARCHAR},
+      </if>
+      <if test="system != null">
+        #{system,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
