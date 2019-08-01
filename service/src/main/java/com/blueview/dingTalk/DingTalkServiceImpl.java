@@ -1,7 +1,6 @@
-package com.blueview.service.impl;
+package com.blueview.dingTalk;
 
 import com.blueview.DingTalkConstant;
-import com.blueview.service.DingdingService;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiCallBackRegisterCallBackRequest;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class DingdingServiceImpl implements DingdingService {
+public class DingTalkServiceImpl implements DingTalkService {
 
     @Override
     public String Gettoken() {

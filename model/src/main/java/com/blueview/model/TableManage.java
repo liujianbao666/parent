@@ -3,7 +3,7 @@ package com.blueview.model;
 import lombok.Data;
 
 @Data
-public class Tablemanage {
+public class TableManage {
     /**
      * 主表
      */

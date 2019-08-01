@@ -4,7 +4,9 @@ package com.blueview.web;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.blueview.model.Company;
+import com.blueview.model.TableManage;
 import com.blueview.service.DatabaseService;
+import com.blueview.service.TableManagerService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ public class DatabaseController {
     @Autowired
     private DatabaseService databaseService;
 
+    @Autowired
+    private TableManagerService tableManagerService;
+
     @RequestMapping(value = "/manage")
     public String addCompany(Model model) {
         Company company = new Company();
@@ -34,7 +39,7 @@ public class DatabaseController {
      */
     @RequestMapping("/saveOrUpdateTable")
     @ResponseBody
-    public Map<String, Object> saveOrUpdateTable(String tableName,String tableComment, String oldTableName, String rows) {
+    public Map<String, Object> saveOrUpdateTable(String tableName, String tableComment, String oldTableName, String rows) {
         Map<String, Object> map = new HashMap<>();
         //查询是否已存在
         String column = databaseService.isTargetTableExistInDB("mdm", tableName);
@@ -48,7 +53,7 @@ public class DatabaseController {
             }
 
             try {
-                databaseService.createNewTable(tableName,tableComment,columnMap);
+                databaseService.createNewTable(tableName, tableComment, columnMap);
                 map.put("msg", "表创建成功！");
                 map.put("code", 200);
                 return map;
@@ -88,15 +93,16 @@ public class DatabaseController {
         }
         return map;
     }
+
     /**
      * 修改表备注
      */
     @RequestMapping("/updateTableComment")
     @ResponseBody
-    public Map<String, Object> updateTableComment(String tableName,String tableComment) {
+    public Map<String, Object> updateTableComment(String tableName, String tableComment) {
         Map<String, Object> map = new HashMap<>();
         try {
-            databaseService.updateTableComment(tableName,tableComment);
+            databaseService.updateTableComment(tableName, tableComment);
             map.put("msg", "表备注修改成功！");
             map.put("code", 200);
             return map;
@@ -106,6 +112,7 @@ public class DatabaseController {
         }
         return map;
     }
+
     /**
      * 获取目录tree
      *
@@ -123,8 +130,20 @@ public class DatabaseController {
         result.add(parent);
         for (int i = 0; i < dataBaseTableName.size(); i++) {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", dataBaseTableName.get(i).get("table_name"));
-            jsonObject.put("parent", "0");
+            String tableName = dataBaseTableName.get(i).get("table_name");
+            jsonObject.put("id", tableName);
+            TableManage tableManage = new TableManage();
+            tableManage.setSideTable(tableName);
+            List<TableManage> tableManages = tableManagerService.getTableManagerSelective(tableManage);
+            if(tableManages.size()>0){
+                for (TableManage t:tableManages) {
+                    jsonObject.put("parent", t.getMainTable());
+                }
+            }else{
+                jsonObject.put("parent", "0");
+            }
+
+
             jsonObject.put("text", dataBaseTableName.get(i).get("comment"));
             result.add(jsonObject);
         }
@@ -173,7 +192,7 @@ public class DatabaseController {
         List<Map<String, String>> column = databaseService.getTableDetail(tableName, columnName);
         if (column.size() == 0) {
             Map<String, String> columnMap = new HashMap<>();
-            columnMap.put(columnName, columnType+" COMMENT '"+columnComment+"'");
+            columnMap.put(columnName, columnType + " COMMENT '" + columnComment + "'");
             try {
                 databaseService.addColumn(tableName, columnMap);
                 map.put("msg", "添加成功！");
@@ -207,17 +226,43 @@ public class DatabaseController {
         try {
             for (String id : ids) {
                 databaseService.dropColumn(tableName, id);
-                map.put("msg", "删除成功！");
-                map.put("code", 200);
-                return map;
             }
+            map.put("msg", "删除成功！");
+            map.put("code", 200);
+            return map;
         } catch (Exception e) {
             map.put("msg", "删除失败！");
             return map;
         }
-        return map;
     }
 
+    /**
+     * 添加副表
+     */
+    @RequestMapping("/saveTableManager")
+    @ResponseBody
+    public Map<String, Object> saveTableManager(TableManage tableManage) {
+        Map<String, Object> map = new HashMap<>();
+        tableManage.setIsSynchronized(false);
+        int count = tableManagerService.insertSelective(tableManage);
+        if (count > 0) {
+            map.put("msg", "添加成功！");
+            map.put("code", 200);
+            return map;
+        } else {
+            map.put("msg", "添加失败！");
+        }
 
+        return map;
+    }
+    /**
+     * 查询副表
+     */
+    @RequestMapping("/selectTableManager")
+    @ResponseBody
+    public List<TableManage> selectTableManager(TableManage tableManage) {
+        List<TableManage> tableManages = tableManagerService.getTableManagerSelective(tableManage);
+        return tableManages;
+    }
 }
 

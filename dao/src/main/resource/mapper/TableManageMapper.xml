@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.blueview.dao.TablemanageMapper">
-  <resultMap id="BaseResultMap" type="com.blueview.model.Tablemanage">
+<mapper namespace="com.blueview.dao.TableManageMapper">
+  <resultMap id="BaseResultMap" type="com.blueview.model.TableManage">
     <result column="main_table" jdbcType="VARCHAR" property="mainTable" />
     <result column="is_synchronized" jdbcType="BIT" property="isSynchronized" />
     <result column="side_table" jdbcType="VARCHAR" property="sideTable" />
     <result column="system" jdbcType="VARCHAR" property="system" />
   </resultMap>
-  <insert id="insert" parameterType="com.blueview.model.Tablemanage">
+  <select id="getTableManagerSelective" parameterType="com.blueview.model.TableManage" resultMap="BaseResultMap">
+    select * FROM tablemanage WHERE 1=1
+    <if test="mainTable != null and mainTable !=''">
+      and main_table = #{mainTable,jdbcType=VARCHAR}
+    </if>
+    <if test="sideTable != null and sideTable !=''">
+      and side_table = #{sideTable,jdbcType=VARCHAR}
+    </if>
+    <if test="system != null and system !=''">
+      and system = #{system,jdbcType=VARCHAR}
+    </if>
+    <if test="isSynchronized != null and isSynchronized !=''">
+      and is_synchronized = #{isSynchronized,jdbcType=BIT}
+    </if>
+  </select>
+
+  <insert id="insert" parameterType="com.blueview.model.TableManage">
     insert into tablemanage (main_table, is_synchronized, side_table, 
       system)
     values (#{mainTable,jdbcType=VARCHAR}, #{isSynchronized,jdbcType=BIT}, #{sideTable,jdbcType=VARCHAR}, 
       #{system,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.blueview.model.Tablemanage">
+  <insert id="insertSelective" parameterType="com.blueview.model.TableManage">
     insert into tablemanage
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="mainTable != null">

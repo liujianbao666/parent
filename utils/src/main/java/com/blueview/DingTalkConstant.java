@@ -11,6 +11,6 @@ public class DingTalkConstant {
     /**
      *
      */
-    public static final String appkey="dingwxq3labiqkm65cs3";
-    public static final String appsecret="L36aoWwAj3Jg2qxVdqvKduf88tV1nWCPr9FMiH1xuL1zQQ_e7-yLxGikDH36h1O8";
+    public static final String appkey="dingiaqtf4zrtbuwhmks";
+    public static final String appsecret="AEMNnoI7SAgqnw7Fndrl7K4gHD52NxAKI1NBejT7-0cCiQMkTSXErIFIJgDVwwN-";
 }

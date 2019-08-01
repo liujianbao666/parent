@@ -1,10 +1,10 @@
-package com.blueview.service;
+package com.blueview.dingTalk;
 
 import com.dingtalk.api.response.OapiSmartworkHrmEmployeeListResponse;
 
 import java.util.List;
 
-public interface DingdingService {
+public interface DingTalkService {
     /**
      * 获取tocken
      * @return

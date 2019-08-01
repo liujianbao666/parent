@@ -11,8 +11,8 @@
         <module name="api" />
         <module name="resource" />
         <module name="foundation" />
-        <module name="model" />
         <module name="dao" />
+        <module name="model" />
         <module name="service" />
         <module name="utils" />
       </profile>
@@ -30,5 +30,16 @@
       <module name="utils" target="1.8" />
       <module name="web" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api" options="-parameters" />
+      <module name="dao" options="-parameters" />
+      <module name="model" options="-parameters" />
+      <module name="resource" options="-parameters" />
+      <module name="service" options="-parameters" />
+      <module name="utils" options="-parameters" />
+      <module name="web" options="-parameters" />
+    </option>
   </component>
 </project>

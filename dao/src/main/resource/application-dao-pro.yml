@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.105.135.134:3305/mdm?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: mysql@Mes
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    #默认为stat,即开启sql监控。这里加了个wall,表示同时开启sql防火墙
+    druid:
+      filters: stat,wal
+      #spring监控，hello.controller是我的控制层包名，也可以是服务层，用逗号分隔多个监控内容
+      aop-patterns: com.blueview.dao.*
+      #监控页面登录用户名
+      StatViewServlet.loginUsername: admin
+      #监控页面登录密码
+      StatViewServlet.loginPassword: 123
+
+
+#mybatis
+mybatis:
+  config-location: classpath*:mapper/*Mapper.xml
+
+#  configuration:                                    #打印sql到控制台
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helperDialect: mysql                           #分页插件方言选择
+  reasonable: true                               #合理化参数，设为true时pageNum<=0 时会查第一页， pageNum>pages（超过总数时），会查询最后一页
+  supportMethodsArguments: true
+  params: count=countSql
+logging:
+  level:
+    com.blueview.dao: DEBUG
+  root: INFO
