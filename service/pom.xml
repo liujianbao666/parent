@@ -5,6 +5,7 @@
         <artifactId>blueview</artifactId>
         <version>0.0.1</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>service</artifactId>
@@ -48,7 +49,17 @@
             <groupId>com.blueview</groupId>
             <artifactId>utils</artifactId>
             <version>0.0.1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
