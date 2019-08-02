@@ -29,37 +29,29 @@
             <artifactId>dao</artifactId>
             <version>0.0.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.taobao.top</groupId>
-            <artifactId>top-api-sdk-dev</artifactId>
-            <version>ding-open-mc-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/lib/taobao-sdk-java-auto_1479188381469-20190725.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.taobao.top</groupId>
-            <artifactId>top-api-sdk-dev-source</artifactId>
-            <version>ding-open-mc-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/lib/taobao-sdk-java-auto_1479188381469-20190725-source.jar</systemPath>
-        </dependency>
         <dependency>
             <groupId>com.blueview</groupId>
             <artifactId>utils</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.taobao.top</groupId>
+            <artifactId>top-api-sdk-dev</artifactId>
+            <version>ding-open-mc-SNAPSHOT</version>
+         <!--   <scope>system</scope>
+            <systemPath>${pom.basedir}/src/lib/taobao-sdk-java-auto_1479188381469-20190725.jar</systemPath>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+       <!-- <dependency>
+            <groupId>com.taobao.top</groupId>
+            <artifactId>top-api-sdk-dev-source</artifactId>
+            <version>ding-open-mc-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/lib/taobao-sdk-java-auto_1479188381469-20190725-source.jar</systemPath>
+        </dependency>-->
+
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <includeSystemScope>true</includeSystemScope>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

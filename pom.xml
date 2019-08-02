@@ -16,13 +16,13 @@
 
     <name>blueview</name>
     <modules>
-        <module>api</module>
         <module>utils</module>
+        <module>model</module>
         <module>resource</module>
+        <module>dao</module>
         <module>service</module>
         <module>web</module>
-        <module>dao</module>
-        <module>model</module>
+        <module>api</module>
     </modules>
 
     <properties>
@@ -52,14 +52,18 @@
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
         <spring-cloud-dependencies.version>Finchley.SR2</spring-cloud-dependencies.version>
         <druid.version>1.1.3</druid.version>
+        <junit.version>4.12</junit.version>
+        <joda-time.version>2.10.2</joda-time.version>
+        <lombok.version>1.18.8</lombok.version>
     </properties>
 
 
-
+    <!--指定项目中公有的依赖-->
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -72,6 +76,10 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -97,6 +105,11 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -144,77 +157,16 @@
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>1.2.10</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <target>${java.version}</target>
-                        <source>${java.version}</source>
-                        <encoding>UTF-8</encoding>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <configuration>
-                        <archive>
-                            <addMavenDescriptor>false</addMavenDescriptor>
-                        </archive>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <!-- <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.yml</include>
-                    <include>**/*.xml</include>
-                    <include>**/*.tld</include>
-                    <include>**/*.p12</include>
-                    <include>**/*.conf</include>
-                    <include>**/*.txt</include>
-                    <include>**/*.wsdl</include>
-                    <include>**/*.xsd</include>
-                    <include>**/*.ftl</include>
-                    <include>processes/*</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                    <include>**/*.tld</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/view</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-
-            <resource>
-                <directory>src/main/proto</directory>
-                <includes>
-                    <include>**/*.proto</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources> -->
-    </build>
 </project>
